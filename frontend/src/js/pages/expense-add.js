@@ -69,7 +69,12 @@ async function saveExpense() {
     return showModal("Error", "Completa descripción, monto y quién pagó.", "error");
   }
 
-  if (selectedParticipants.length === 0) {
+  let participantsToSend = selectedParticipants;
+  if (participantsToSend.length === 0) {
+    const payer = members.find(m => m._id === paidBy);
+    participantsToSend = payer ? [payer] : [];
+  }
+  if (participantsToSend.length === 0) {
     return showModal("Error", "Selecciona al menos un participante.", "error");
   }
 
@@ -79,7 +84,7 @@ async function saveExpense() {
   formData.append("amount", amount);
   formData.append("paidBy", paidBy);
 
-  selectedParticipants.forEach(p => {
+  participantsToSend.forEach(p => {
     formData.append("participants", p._id);
   });
 
