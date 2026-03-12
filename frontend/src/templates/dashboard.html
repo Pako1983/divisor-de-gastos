@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Resumen Global - Divisor de Gastos</title>
+
+  <link rel="stylesheet" href="../css/theme-dark.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/modals.css">
+</head>
+
+<body>
+
+  <div id="logoContainer"></div>
+  <script>
+   fetch("../components/logo.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("logoContainer").innerHTML = html;
+    });
+  </script>
+
+
+  <div class="container">
+
+    <h1>Resumen Global</h1>
+
+    <div class="stats">
+      <div class="stat-card positive">
+        <h3>Te deben</h3>
+        <p id="owedToYou">€0</p>
+      </div>
+
+      <div class="stat-card negative">
+        <h3>Debes</h3>
+        <p id="youOwe">€0</p>
+      </div>
+
+      <div class="stat-card neutral">
+        <h3>Balance total</h3>
+        <p id="totalBalance">€0</p>
+      </div>
+    </div>
+
+    <hr>
+
+    <h2>Mis Grupos</h2>
+    <div id="groupsList" class="groups-list"></div>
+
+    <button id="backBtn" class="btn-secondary">Volver al Perfil</button>
+    <button id="logoutBtn" class="btn-danger logout-btn">Cerrar Sesión</button>
+
+  </div>
+
+  <div id="globalModal" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="modalTitle"></h3>
+    <p id="modalMessage"></p>
+
+    <div class="modal-buttons">
+      <button id="modalAccept" class="btn">Aceptar</button>
+      <button id="modalCancel" class="btn-secondary">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <button onclick="window.location.href='dashboard.html'">
+    <i class="icon">🏠</i>
+    <span>Inicio</span>
+  </button>
+
+  <button onclick="window.location.href='group-create.html'">
+    <i class="icon">➕</i>
+    <span>Nuevo</span>
+  </button>
+
+  <button onclick="window.location.href='profile.html'">
+    <i class="icon">👤</i>
+    <span>Perfil</span>
+  </button>
+</nav>
+
+
+
+  <script type="module" src="../js/pages/dashboard.js"></script>
+</body>
+</html>

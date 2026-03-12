@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi Perfil - Divisor de Gastos</title>
+
+  <link rel="stylesheet" href="../css/theme-dark.css">
+  <link rel="stylesheet" href="../css/profile.css">
+  <link rel="stylesheet" href="../css/modals.css">
+</head>
+
+<body>
+
+  <div id="logoContainer"></div>
+  <script>
+   fetch("../components/logo.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("logoContainer").innerHTML = html;
+    });
+  </script>
+
+
+  <div class="profile-container">
+
+    <div class="profile-header">
+      <img id="avatar" class="profile-avatar" src="" alt="Avatar">
+      <h2 id="userName"></h2>
+      <p id="userEmail"></p>
+
+      <div class="profile-buttons">
+        <button id="editNameBtn" class="btn">Editar nombre</button>
+        <button id="editPasswordBtn" class="btn">Cambiar contraseña</button>
+        <button id="editAvatarBtn" class="btn">Cambiar avatar</button>
+        <button id="logoutBtn" class="btn btn-danger">Cerrar Sesión</button>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="groups-section">
+  <div class="groups-header">
+    <h3>Mis Grupos</h3>
+  </div>
+
+  <div id="groupsList" class="profile-groups-list"></div>
+
+  <div class="profile-create-group-btn">
+    <button id="createGroupBtn" class="btn">Crear Grupo</button>
+  </div>
+</div>
+
+
+  </div>
+
+  <!-- MODAL GLOBAL -->
+  <div id="globalModal" class="modal hidden">
+    <div class="modal-content">
+      <h3 id="modalTitle"></h3>
+      <p id="modalMessage"></p>
+
+      <div class="modal-buttons">
+        <button id="modalAccept" class="btn">Aceptar</button>
+        <button id="modalCancel" class="btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+  <button onclick="window.location.href='dashboard.html'">
+    <i class="icon">🏠</i>
+    <span>Inicio</span>
+  </button>
+
+  <button onclick="window.location.href='group-create.html'">
+    <i class="icon">➕</i>
+    <span>Nuevo</span>
+  </button>
+
+  <button onclick="window.location.href='profile.html'">
+    <i class="icon">👤</i>
+    <span>Perfil</span>
+  </button>
+</nav>
+
+
+  <script type="module" src="../js/pages/profile.js"></script>
+</body>
+</html>
+
+

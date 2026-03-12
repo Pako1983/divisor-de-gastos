@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalle del Grupo - Divisor de Gastos</title>
+
+  <link rel="stylesheet" href="../css/theme-dark.css">
+  <link rel="stylesheet" href="../css/group-detail.css">
+  <link rel="stylesheet" href="../css/modals.css">
+</head>
+
+<body>
+
+  <div id="logoContainer"></div>
+  <script>
+   fetch("../components/logo.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("logoContainer").innerHTML = html;
+    });
+  </script>
+
+
+  <div class="group-detail-container">
+
+    <div class="top-buttons">
+      <button id="backBtn" class="btn">← Volver</button>
+    </div>
+
+    <h2 id="groupName"></h2>
+
+    <!-- MIEMBROS -->
+    <h3 class="section-title">Miembros</h3>
+    <div id="membersList"></div>
+
+    <!-- AÑADIR USUARIOS -->
+    <div class="add-user-section">
+    <input 
+    id="searchInput" 
+    type="text" 
+    placeholder="Buscar usuario por nombre o email..." class="input">
+
+    <div id="autocomplete" class="autocomplete hidden"></div>
+
+   <div id="selectedUsers" class="chips-container"></div>
+
+    <div class="add-user-btn-container">
+    <button id="addUserBtn" class="btn">Añadir usuario</button>
+    </div>
+    </div>
+
+
+    <!-- BALANCES -->
+    <h2>Balances</h2>
+    <div id="balancesContainer"></div>
+
+    <hr class="section-divider">
+
+    <!-- GASTOS -->
+    <h3 class="section-title">Gastos</h3>
+    
+    <div class="add-expense-container">
+    <button id="addExpenseBtn" class="btn">+ Añadir Gasto</button>
+    </div>
+
+<div id="expensesContainer"></div>
+
+    <!-- ELIMINAR GRUPO -->
+    <div class="delete-btn-container">
+      <button id="deleteGroupBtn">Eliminar grupo</button>
+    </div>
+
+    <!-- CERRAR SESIÓN -->
+    <div class="group-detail-buttons">
+      <button id="logoutBtn" class="btn btn-danger">Cerrar Sesión</button>
+    </div> 
+
+  </div>
+
+  <!-- MODAL DE RECIBO -->
+  <div id="receiptModal" class="receipt-modal hidden">
+    <div class="receipt-modal-content">
+      <span id="closeReceiptModal" class="receipt-modal-close">&times;</span>
+      <img id="receiptImage" src="" alt="Recibo" />
+    </div>
+  </div>
+
+  <!-- MODAL GLOBAL -->
+<div id="globalModal" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="modalTitle"></h3>
+    <p id="modalMessage"></p>
+
+    <div class="modal-buttons">
+      <button id="modalAccept" class="btn btn-primary">Aceptar</button>
+      <button id="modalCancel" class="btn btn-secondary">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <button onclick="window.location.href='dashboard.html'">
+    <i class="icon">🏠</i>
+    <span>Inicio</span>
+  </button>
+
+  <button onclick="window.location.href='group-create.html'">
+    <i class="icon">➕</i>
+    <span>Nuevo</span>
+  </button>
+
+  <button onclick="window.location.href='profile.html'">
+    <i class="icon">👤</i>
+    <span>Perfil</span>
+  </button>
+</nav>
+
+
+
+  <script type="module" src="../js/pages/group-detail.js"></script>
+</body>
+</html>
+
+

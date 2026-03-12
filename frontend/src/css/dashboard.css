@@ -1,0 +1,185 @@
+/* ============================================
+   CONTENEDOR PRINCIPAL DEL DASHBOARD
+   ============================================ */
+
+.dashboard-container {
+  width: 90%;
+  max-width: 700px;
+  margin: 40px auto;
+  background: var(--bg-card);
+  padding: 25px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+/* ============================================
+   ESTADÍSTICAS
+   ============================================ */
+
+.stats {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  flex: 1;
+  min-width: 150px;
+  background: #1b1f27;
+  padding: 20px;
+  border-radius: var(--radius);
+  text-align: center;
+  border: 1px solid var(--border);
+  transition: var(--transition);
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 15px rgba(62,166,255,0.25);
+}
+
+.stat-card h3 {
+  margin-bottom: 10px;
+  color: var(--text-muted);
+}
+
+.stat-card p {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--text);
+}
+
+.stat-card.positive {
+  border-left: 4px solid var(--primary);
+}
+
+.stat-card.negative {
+  border-left: 4px solid var(--danger);
+}
+
+.stat-card.neutral {
+  border-left: 4px solid #6c7a89;
+}
+
+/* ============================================
+   LISTA DE GRUPOS
+   ============================================ */
+
+.group.list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.group-card {
+  background: #1b1f27;
+  padding: 15px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text);
+}
+
+.group-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 12px rgba(62,166,255,0.25);
+}
+
+/* ============================================
+   BOTÓN DE LOGOUT
+   ============================================ */
+
+.dashboard-logout-btn {
+  width: 100%;
+  margin-top: 25px;
+}
+
+/* ============================================
+   📱 Ajustes para móviles
+   ============================================ */
+
+@media (max-width: 600px) {
+
+  .container {
+    width: 100%;
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .stats {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .stat-card {
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .groups-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  .logout-btn {
+    margin-bottom: 20px;
+  }
+}
+
+/* ============================================
+   📱 Tablets (pantallas medianas)
+   ============================================ */
+
+@media (min-width: 601px) and (max-width: 900px) {
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .stat-card {
+    padding: 20px;
+  }
+
+  button {
+    width: 80%;
+    margin: 10px auto;
+    display: block;
+  }
+}
+
+/* ============================================
+   🖥️ Escritorio grande
+   ============================================ */
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 900px;
+    margin: auto;
+  }
+}
+

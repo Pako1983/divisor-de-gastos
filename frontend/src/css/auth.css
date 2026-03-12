@@ -1,0 +1,103 @@
+/* ============================================
+   CONTENEDOR PRINCIPAL DE LOGIN / REGISTER
+   ============================================ */
+
+.auth-container {
+  width: 90%;
+  max-width: 400px;
+  margin: 80px auto;
+  background: var(--bg-card);
+  padding: 30px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+/* ============================================
+   TITULOS
+   ============================================ */
+
+.auth-container h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: var(--primary);
+  text-shadow: 0 0 6px rgba(62,166,255,0.35);
+}
+
+/* ============================================
+   INPUT GROUPS
+   ============================================ */
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Inputs usan el estilo global del theme */
+
+/* ============================================
+   BOTÓN PRINCIPAL
+   ============================================ */
+
+.auth-container .btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: var(--radius);
+}
+
+/* ============================================
+   ENLACES
+   ============================================ */
+
+.link {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.link a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.link a:hover {
+  text-decoration: underline;
+  text-shadow: 0 0 6px rgba(62,166,255,0.35);
+}
+
+/* ============================================
+   📱 Ajustes para móviles
+   ============================================ */
+
+@media (max-width: 600px) {
+
+  .auth-container {
+    margin: 40px auto;
+    padding: 20px;
+  }
+
+  .auth-container h1 {
+    font-size: 1.6rem;
+  }
+
+  .input-group label {
+    font-size: 0.95rem;
+  }
+
+  .auth-container .btn {
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  .link {
+    font-size: 0.95rem;
+  }
+}
+

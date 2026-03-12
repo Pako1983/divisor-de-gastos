@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Añadir Gasto - Divisor de Gastos</title>
+
+  <link rel="stylesheet" href="../css/theme-dark.css">
+  <link rel="stylesheet" href="../css/expense-add.css">
+  <link rel="stylesheet" href="../css/modals.css">
+</head>
+
+<body>
+
+  <div id="logoContainer"></div>
+  <script>
+   fetch("../components/logo.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("logoContainer").innerHTML = html;
+    });
+  </script>
+
+
+  <div class="expense-add-container">
+
+    <!-- BOTÓN VOLVER CENTRADO -->
+    <div class="top-buttons">
+      <button id="backBtn" class="btn">← Volver</button>
+    </div>
+
+    <h2>Añadir Gasto</h2>
+
+    <!-- DESCRIPCIÓN -->
+    <label>Descripción</label>
+    <input type="text" id="description" placeholder="Ej: Cena en restaurante" class="expense-input">
+
+    <!-- MONTO -->
+    <label>Monto (€)</label>
+    <input type="number" id="amount" class="expense-input">
+
+    <!-- PAGADO POR -->
+    <label>Pagado por</label>
+    <select id="paidBy" class="expense-input"></select>
+
+    <!-- PARTICIPANTES -->
+    <label>Participantes</label>
+
+    <!-- BUSCADOR -->
+    <input type="text" id="searchMember" placeholder="Buscar miembro" class="expense-input">
+
+    <!-- AUTOCOMPLETE -->
+    <div id="autocomplete" class="autocomplete"></div>
+
+    <!-- CHIPS DE PARTICIPANTES -->
+    <div id="chips" class="chips-container"></div>
+
+    <!-- RECIBO -->
+    <label>Foto del recibo (opcional)</label>
+    <input type="file" id="receipt" accept="image/*" class="expense-input">
+
+    <!-- GUARDAR GASTO CENTRADO -->
+    <div class="save-expense-container">
+      <button id="saveExpenseBtn" class="btn btn-primary">Guardar Gasto</button>
+    </div>
+
+    <!-- CERRAR SESIÓN -->
+    <div class="logout-container">
+      <button id="logoutBtn" class="btn btn-danger">Cerrar Sesión</button>
+    </div>
+
+  </div>
+
+  <!-- MODAL GLOBAL -->
+  <div id="globalModal" class="modal hidden">
+    <div class="modal-content">
+      <h3 id="modalTitle"></h3>
+      <p id="modalMessage"></p>
+
+      <div class="modal-buttons">
+        <button id="modalAccept" class="btn btn-primary">Aceptar</button>
+        <button id="modalCancel" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+  <button onclick="window.location.href='dashboard.html'">
+    <i class="icon">🏠</i>
+    <span>Inicio</span>
+  </button>
+
+  <button onclick="window.location.href='group-create.html'">
+    <i class="icon">➕</i>
+    <span>Nuevo</span>
+  </button>
+
+  <button onclick="window.location.href='profile.html'">
+    <i class="icon">👤</i>
+    <span>Perfil</span>
+  </button>
+</nav>
+
+
+  <script type="module" src="../js/pages/expense-add.js"></script>
+</body>
+</html>
+
+

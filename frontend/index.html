@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Divisor de Gastos</title>
+</head>
+
+<body>
+
+  <div id="logoContainer"></div>
+  <script>
+   fetch("components/logo.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("logoContainer").innerHTML = html;
+    });
+  </script>
+
+  <p>Redirigiendo...</p>
+
+  <div id="globalModal" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="modalTitle"></h3>
+    <p id="modalMessage"></p>
+
+    <div class="modal-buttons">
+      <button id="modalAccept" class="btn">Aceptar</button>
+      <button id="modalCancel" class="btn-secondary">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+
+  <script>
+    // Redirección inmediata al login
+    window.location.href = "src/templates/login.html";
+  </script>
+</body>
+</html>
+

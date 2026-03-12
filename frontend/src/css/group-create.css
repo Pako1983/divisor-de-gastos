@@ -1,0 +1,204 @@
+/* ============================================
+   CONTENEDOR PRINCIPAL
+   ============================================ */
+
+.group-create-container {
+  width: 90%;
+  max-width: 600px;
+  margin: 40px auto;
+  background: var(--bg-card);
+  padding: 25px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ============================================
+   TÍTULO
+   ============================================ */
+
+.group-create-container h2 {
+  margin-bottom: 10px;
+  color: var(--primary);
+  text-align: center;
+  text-shadow: 0 0 6px rgba(62,166,255,0.35);
+}
+
+/* ============================================
+   LABELS
+   ============================================ */
+
+.group-create-container label {
+  display: block;
+  text-align: left;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  color: var(--text-muted);
+}
+
+/* ============================================
+   INPUT GENERAL
+   ============================================ */
+
+.group-create-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: #11161c;
+  color: var(--text);
+  transition: var(--transition);
+}
+
+.group-create-input:focus {
+  border-color: var(--primary);
+}
+
+/* ============================================
+   BLOQUE DE AÑADIR USUARIOS
+   ============================================ */
+
+.group-create-users-block {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* ============================================
+   INPUT + AUTOCOMPLETE
+   ============================================ */
+
+.group-create-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.group-create-autocomplete {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #1b1f27;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-top: 5px;
+  z-index: 50;
+  display: none;
+  text-align: left;
+  box-shadow: 0 0 12px rgba(0,0,0,0.35);
+}
+
+.group-create-autocomplete div {
+  padding: 10px;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text);
+}
+
+.group-create-autocomplete div:hover {
+  background: #222832;
+}
+
+/* ============================================
+   CHIPS
+   ============================================ */
+
+.group-create-chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.group-create-chip {
+  background: #1e1e1e;
+  padding: 8px 12px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  animation: fadeIn 0.3s ease;
+  color: var(--text);
+}
+
+.group-create-chip button {
+  background: transparent;
+  border: none;
+  color: var(--danger);
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Animación */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+
+.group-create-buttons {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ============================================
+   📱 Ajustes para móviles
+   ============================================ */
+
+@media (max-width: 600px) {
+
+  .group-create-container {
+    margin: 20px auto;
+    padding: 18px;
+    gap: 15px;
+  }
+
+  .group-create-input {
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  .group-create-chips-container {
+    justify-content: center;
+  }
+
+  .group-create-chip {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+
+  .group-create-buttons button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  .group-create-autocomplete {
+    width: 100%;
+  }
+}
+
+/* ============================================
+   📱 Tablets
+   ============================================ */
+
+@media (min-width: 601px) and (max-width: 900px) {
+
+  .group-create-container {
+    max-width: 500px;
+  }
+
+  .group-create-input {
+    max-width: 90%;
+  }
+}
+

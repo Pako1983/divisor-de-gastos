@@ -1,0 +1,376 @@
+/* ============================================
+   CONTENEDOR PRINCIPAL
+   ============================================ */
+
+.group-detail-container {
+  width: 90%;
+  max-width: 700px;
+  margin: 40px auto;
+  background: var(--bg-card);
+  padding: 25px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+/* ============================================
+   TÍTULO
+   ============================================ */
+
+.group-detail-container h2 {
+  color: var(--primary);
+  margin-bottom: 20px;
+  text-align: center;
+  text-shadow: 0 0 6px rgba(62,166,255,0.35);
+}
+
+/* ============================================
+   SECCIONES
+   ============================================ */
+
+.section-title {
+  margin-top: 25px;
+  margin-bottom: 10px;
+  color: var(--text-muted);
+  font-size: 18px;
+  text-align: center;
+}
+
+.section-divider {
+  margin: 30px 0;
+  border: 0;
+  border-top: 2px solid var(--border);
+}
+
+/* ============================================
+   TARJETAS DE MIEMBROS
+   ============================================ */
+
+.member-card {
+  background: #1b1f27;
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  margin-bottom: 10px;
+  text-align: left;
+  transition: var(--transition);
+}
+
+.member-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 10px rgba(62,166,255,0.25);
+}
+
+.member-card span {
+  display: block;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* ============================================
+   TARJETAS DE GASTOS
+   ============================================ */
+
+.expense-card {
+  background: #1b2230;
+  border-left: 4px solid var(--primary);
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.expense-card small {
+  color: var(--text-muted);
+}
+
+.expense-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 12px rgba(62,166,255,0.25);
+}
+
+/* Botón ver recibo */
+.receipt-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 8px;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s ease;
+}
+
+.receipt-btn:hover {
+  background: var(--primary-hover);
+}
+
+.receipt-btn::before {
+  content: "🧾";
+  font-size: 16px;
+}
+
+/* Botón eliminar gasto */
+.delete-expense-btn {
+  background: var(--danger);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 8px;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.delete-expense-btn:hover {
+  background: var(--danger-hover);
+}
+
+/* ============================================
+   TARJETAS DE BALANCES
+   ============================================ */
+
+.balance-card {
+  background: #1b2720;
+  border-left: 4px solid #4caf50;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+/* ============================================
+   BOTONES DE LA PÁGINA
+   ============================================ */
+
+.group-detail-buttons {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Botón eliminar grupo */
+#deleteGroupBtn {
+  background-color: var(--danger);
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 20px;
+}
+
+#deleteGroupBtn:hover {
+  background-color: var(--danger-hover);
+  transform: scale(1.05);
+}
+
+#deleteGroupBtn:active {
+  transform: scale(0.97);
+}
+
+/* Contenedor del botón */
+.delete-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Centrar botón VOLVER */
+.top-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+/* Centrar botón AÑADIR GASTO */
+.add-expense-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.add-expense-container .btn {
+  min-width: 160px;
+  text-align: center;
+}
+
+/* ============================================
+   AUTOCOMPLETADO DE USUARIOS
+   ============================================ */
+
+.add-user-section {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: #11161c;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.autocomplete {
+  background: #1b1f27;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-height: 180px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.autocomplete-item {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+.autocomplete-item:hover {
+  background: #222832;
+}
+
+/* ============================================
+   CHIPS DE USUARIOS SELECCIONADOS
+   ============================================ */
+
+.chips-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.chip {
+  background: #1e1e1e;
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  border-radius: 20px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.chip-remove {
+  cursor: pointer;
+  color: var(--danger);
+  font-weight: bold;
+}
+
+.chip-remove:hover {
+  color: var(--danger-hover);
+}
+
+/* ============================================
+   BOTÓN ELIMINAR USUARIO
+   ============================================ */
+
+.member-remove-btn {
+  margin-top: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 6px;
+  background: var(--danger);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.member-remove-btn:hover {
+  background: var(--danger-hover);
+}
+
+.add-user-btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* ============================================
+   📱 Ajustes para móviles
+   ============================================ */
+
+@media (max-width: 600px) {
+
+  .group-detail-container {
+    margin: 20px auto;
+    padding: 18px;
+  }
+
+  .section-title {
+    font-size: 1.1rem;
+    margin-top: 20px;
+  }
+
+  .member-card,
+  .expense-card,
+  .balance-card {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  .expense-card small {
+    font-size: 0.85rem;
+  }
+
+  .receipt-btn,
+  .delete-expense-btn,
+  .member-remove-btn {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  .chips-container {
+    justify-content: center;
+  }
+
+  .chip {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+
+  .group-detail-buttons button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  #deleteGroupBtn {
+    width: 100%;
+  }
+}
+
+/* ============================================
+   📱 Tablets
+   ============================================ */
+
+@media (min-width: 601px) and (max-width: 900px) {
+
+  .group-detail-container {
+    max-width: 600px;
+  }
+
+  .member-card,
+  .expense-card,
+  .balance-card {
+    padding: 15px;
+  }
+}
+

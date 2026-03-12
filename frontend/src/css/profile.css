@@ -1,0 +1,176 @@
+/* ============================================
+   CONTENEDOR PRINCIPAL DEL PERFIL
+   ============================================ */
+
+.profile-container {
+  width: 90%;
+  max-width: 600px;
+  margin: 40px auto;
+  background: var(--bg-card);
+  padding: 25px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+/* ============================================
+   CABECERA DEL PERFIL
+   ============================================ */
+
+.profile-header {
+  text-align: center;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary);
+  margin-bottom: 15px;
+  box-shadow: 0 0 12px rgba(62,166,255,0.25);
+}
+
+/* ============================================
+   BOTONES DEL PERFIL
+   ============================================ */
+
+.profile-buttons {
+  text-align: center;
+}
+
+.profile-buttons .btn {
+  margin: 5px;
+}
+
+.profile-create-group-btn {
+  text-align: center;
+  margin-top: 15px;
+}
+
+/* ============================================
+   SECCIÓN DE GRUPOS
+   ============================================ */
+
+.groups-section {
+  margin-top: 20px;
+}
+
+.groups-header {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+/* Lista de grupos del perfil */
+.profile-groups-list {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Tarjeta de grupo del perfil */
+.profile-group-card {
+  background: #1b1f27;
+  padding: 15px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text);
+}
+
+.profile-group-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 12px rgba(62,166,255,0.25);
+}
+
+/* ============================================
+   BOTÓN DE LOGOUT
+   ============================================ */
+
+.profile-logout-btn {
+  width: 100%;
+  margin-top: 25px;
+}
+
+/* Tarjeta de grupo genérica */
+.group-card {
+  background: #1b1f27;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  color: var(--text);
+  text-align: left;
+}
+
+.group-card:hover {
+  background: #222832;
+  transform: translateY(-2px);
+  box-shadow: 0 0 12px rgba(62,166,255,0.25);
+}
+
+/* ============================================
+   📱 Ajustes para móviles
+   ============================================ */
+
+@media (max-width: 600px) {
+
+  .profile-container {
+    margin: 20px auto;
+    padding: 18px;
+  }
+
+  .profile-avatar {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 12px;
+  }
+
+  .profile-buttons .btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  .profile-create-group-btn .btn {
+    width: 100%;
+  }
+
+  .profile-group-card {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  .groups-header {
+    font-size: 1rem;
+  }
+
+  .profile-logout-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+  }
+}
+
+/* ============================================
+   📱 Tablets
+   ============================================ */
+
+@media (min-width: 601px) and (max-width: 900px) {
+
+  .profile-container {
+    max-width: 500px;
+  }
+
+  .profile-avatar {
+    width: 110px;
+    height: 110px;
+  }
+}
+

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Iniciar Sesión - Divisor de Gastos</title>
+  <link rel="stylesheet" href="../css/theme-dark.css">
+  <link rel="stylesheet" href="../css/auth.css">
+  <link rel="stylesheet" href="../css/modals.css">
+</head>
+
+<body>
+
+  <div id="logoContainer"></div>
+  <script>
+   fetch("../components/logo.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("logoContainer").innerHTML = html;
+    });
+  </script>
+
+
+  <div class="auth-container">
+    <h1>Divisor de Gastos</h1>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <label>Email</label>
+        <input type="email" id="email" required autofocus>
+      </div>
+
+      <div class="input-group">
+        <label>Contraseña</label>
+        <input type="password" id="password" required>
+      </div>
+
+      <button type="submit" class="btn">Iniciar Sesión</button>
+
+      <p class="link">
+        ¿No tienes cuenta?
+        <a href="register.html">Regístrate aquí</a>
+      </p>
+
+      <p class="link">
+        <a href="#" id="forgotPassword">¿Olvidaste tu contraseña?</a>
+      </p>
+    </form>
+  </div>
+
+  <!-- MODAL GLOBAL -->
+  <div id="globalModal" class="modal hidden">
+    <div class="modal-content">
+      <h3 id="modalTitle"></h3>
+      <p id="modalMessage"></p>
+
+      <div class="modal-buttons">
+        <button id="modalAccept" class="btn">Aceptar</button>
+        <button id="modalCancel" class="btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+  <button onclick="window.location.href='dashboard.html'">
+    <i class="icon">🏠</i>
+    <span>Inicio</span>
+  </button>
+
+  <button onclick="window.location.href='group-create.html'">
+    <i class="icon">➕</i>
+    <span>Nuevo</span>
+  </button>
+
+  <button onclick="window.location.href='profile.html'">
+    <i class="icon">👤</i>
+    <span>Perfil</span>
+  </button>
+</nav>
+
+
+  <script type="module" src="../js/pages/login.js"></script>
+</body>
+</html>
+

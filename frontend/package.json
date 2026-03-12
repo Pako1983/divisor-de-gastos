@@ -1,0 +1,12 @@
+{
+  "name": "divisor-de-gastos-frontend",
+  "version": "1.0.0",
+  "description": "Frontend de la aplicación Divisor de Gastos",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx live-server --port=3000 --open=index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}

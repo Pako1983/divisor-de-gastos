@@ -1,0 +1,425 @@
+/* ============================================
+   VARIABLES GLOBALES (Tema oscuro moderno + azul)
+   ============================================ */
+:root {
+  --bg: #0d0f12;
+  --bg-card: #161a20;
+
+  --text: #e6e9ef;
+  --text-muted: #9aa3b2;
+
+  --primary: #3ea6ff;
+  --primary-hover: #1e8fe3;
+
+  --danger: #ff4f4f;
+  --danger-hover: #d63d3d;
+
+  --border: #1f242d;
+
+  --radius: 10px;
+  --transition: 0.25s ease;
+  --shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+/* ============================================
+   ESTILOS BASE
+   ============================================ */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+/* Reset seguro */
+* {
+  box-sizing: border-box;
+}
+
+/* ============================================
+   BOTONES GLOBALES
+   ============================================ */
+.btn {
+  padding: 10px 20px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 14px;
+  transition: var(--transition);
+}
+
+.btn:hover {
+  background: var(--primary-hover);
+}
+
+.btn-danger {
+  background: var(--danger);
+}
+
+.btn-danger:hover {
+  background: var(--danger-hover);
+}
+
+.btn-secondary {
+  background: #2c313a;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #242830;
+}
+
+/* ============================================
+   INPUTS GLOBALES
+   ============================================ */
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: #11161c;
+  color: var(--text);
+  transition: var(--transition);
+  font-size: 14px;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+}
+
+/* ============================================
+   CONTENEDORES BASE
+   ============================================ */
+.container {
+  width: 90%;
+  max-width: 900px;
+  margin: 40px auto;
+  background: var(--bg-card);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.app-logo {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.app-logo img {
+  width: 140px;
+  opacity: 0.9;
+}
+
+/* ============================================
+   RESPONSIVIDAD GLOBAL
+   ============================================ */
+
+/* 📱 MÓVILES */
+@media (max-width: 600px) {
+
+  body {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .container {
+    width: 100%;
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  p, h3 {
+    font-size: 1rem;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+
+  .stats,
+  .groups-list,
+  .list,
+  .card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .stat-card,
+  .card,
+  .group-card {
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+  }
+
+  .app-logo {
+    margin-bottom: 15px;
+  }
+}
+
+/* 📱 TABLETS */
+@media (min-width: 601px) and (max-width: 900px) {
+
+  .container {
+    padding: 18px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  button {
+    width: 80%;
+    margin: 10px auto;
+    display: block;
+  }
+}
+
+/* 🖥️ ESCRITORIO GRANDE */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1000px;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+  }
+}
+
+/* ============================================
+   MODALES GLOBALES (overlay)
+   ============================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  backdrop-filter: blur(3px);
+}
+
+/* ============================================
+   CAJA INTERNA DEL MODAL (renombrada)
+   ============================================ */
+.modal-box {
+  background: #1b222c;
+  padding: 25px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  animation: modalFade 0.25s ease-out;
+  border: 1px solid var(--border);
+}
+
+@keyframes modalFade {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-box h2 {
+  margin-top: 0;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.modal-box input,
+.modal-box select,
+.modal-box textarea {
+  background: #11161c;
+  border: 1px solid var(--border);
+}
+
+.modal-box button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+/* ============================================
+   TARJETAS GLOBALES
+   ============================================ */
+.card,
+.group-card,
+.stat-card {
+  background: #1b1f27;
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover,
+.group-card:hover,
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 15px rgba(0,0,0,0.35);
+}
+
+/* ============================================
+   LISTAS GLOBALES
+   ============================================ */
+.list,
+.groups-list,
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ============================================
+   BOTONES NATIVOS
+   ============================================ */
+button {
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+/* 📱 Ajustes responsivos para modales y tarjetas */
+@media (max-width: 600px) {
+  .modal-box {
+    padding: 18px;
+    width: 92%;
+  }
+
+  .card,
+  .group-card,
+  .stat-card {
+    padding: 15px;
+  }
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.app-logo img {
+  width: 140px;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 8px rgba(62, 166, 255, 0.25));
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.app-logo img:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 12px rgba(62, 166, 255, 0.45));
+}
+
+/* Tamaño base del logo */
+.app-logo img {
+  width: 140px;
+  max-width: 60%;
+  height: auto;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 8px rgba(62, 166, 255, 0.25));
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+/* Hover elegante */
+.app-logo img:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 12px rgba(62, 166, 255, 0.45));
+}
+
+/* 📱 Ajuste perfecto para móviles */
+@media (max-width: 600px) {
+  .app-logo img {
+    width: 110px;
+    max-width: 70%;
+    opacity: 1;
+  }
+}
+
+/* 📱 Ajuste para tablets */
+@media (min-width: 601px) and (max-width: 900px) {
+  .app-logo img {
+    width: 130px;
+    max-width: 65%;
+  }
+}
+
+/* ============================================
+   MENÚ INFERIOR TIPO APP MÓVIL
+   ============================================ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #11161c;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  z-index: 999;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.4);
+}
+
+.bottom-nav button {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.bottom-nav button .icon {
+  font-size: 22px;
+}
+
+.bottom-nav button:hover {
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.bottom-nav button.active {
+  color: var(--primary);
+}
+
+/* Ocultar en pantallas grandes */
+@media (min-width: 900px) {
+  .bottom-nav {
+    display: none;
+  }
+}

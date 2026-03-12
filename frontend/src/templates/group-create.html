@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Grupo - Divisor de Gastos</title>
+
+  <link rel="stylesheet" href="../css/theme-dark.css">
+  <link rel="stylesheet" href="../css/group-create.css">
+  <link rel="stylesheet" href="../css/modals.css">
+</head>
+
+<body>
+
+  <div id="logoContainer"></div>
+  <script>
+   fetch("../components/logo.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("logoContainer").innerHTML = html;
+    });
+  </script>
+
+
+  <div class="group-create-container">
+
+    <h2>Crear Grupo</h2>
+
+<label>Nombre del grupo</label>
+<input type="text" id="groupName" placeholder="Ej: Viaje a París" class="group-create-input">
+
+<div class="group-create-users-block">
+  <label>Añadir usuarios</label>
+
+  <div class="group-create-input-wrapper">
+    <input type="text" id="userSearch" placeholder="Buscar usuario...">
+    <div id="autocomplete" class="group-create-autocomplete"></div>
+  </div>
+
+  <div id="chips" class="group-create-chips-container"></div>
+</div>
+
+
+    <div class="group-create-buttons">
+      <button id="createGroupBtn" class="btn">Crear Grupo</button>
+      <button id="backBtn" class="btn">Volver al Perfil</button>
+      <button id="logoutBtn" class="btn btn-danger">Cerrar Sesión</button>
+    </div>
+
+  </div>
+
+  <!-- MODAL GLOBAL -->
+<div id="globalModal" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="modalTitle"></h3>
+    <p id="modalMessage"></p>
+
+    <div class="modal-buttons">
+      <button id="modalAccept" class="btn">Aceptar</button>
+      <button id="modalCancel" class="btn-secondary">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <button onclick="window.location.href='dashboard.html'">
+    <i class="icon">🏠</i>
+    <span>Inicio</span>
+  </button>
+
+  <button onclick="window.location.href='group-create.html'">
+    <i class="icon">➕</i>
+    <span>Nuevo</span>
+  </button>
+
+  <button onclick="window.location.href='profile.html'">
+    <i class="icon">👤</i>
+    <span>Perfil</span>
+  </button>
+</nav>
+
+
+
+  <script type="module" src="../js/pages/group-create.js"></script>
+</body>
+</html>
+
