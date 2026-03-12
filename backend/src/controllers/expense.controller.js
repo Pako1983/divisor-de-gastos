@@ -79,6 +79,7 @@ exports.createExpense = async (req, res, next) => {
 
     const creator = await User.findById(paidBy);
 
+    const baseUrl = "https://divisor-de-gastos.onrender.com";
     for (const member of group.members) {
       const { html, text } = newExpenseTemplate(
         member.name,
@@ -86,8 +87,8 @@ exports.createExpense = async (req, res, next) => {
         description,
         amountValue,
         creator ? creator.name : "",
-        `https://tuapp.com/expenses/${expense._id}`,
-        "https://tuapp.com/logo.png"
+        `${baseUrl}/expenses/${expense._id}`,
+        `${baseUrl}/assets/logo.png`
       );
 
       await sendEmail(member.email, "Nuevo gasto registrado", html, text);
