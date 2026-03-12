@@ -1,6 +1,8 @@
 import { showModal } from "../components/modal.js";
 import { API_URL } from "../config.js";
 
+const pendingRedirect = JSON.parse(localStorage.getItem("pendingRedirect") || "null");
+
 
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -34,6 +36,11 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     showModal("Bienvenido", "Inicio de sesión exitoso");
 
     setTimeout(() => {
+      if (pendingRedirect?.url) {
+        localStorage.removeItem("pendingRedirect");
+        window.location.href = pendingRedirect.url;
+        return;
+      }
       window.location.href = "profile.html";
     }, 1500);
 

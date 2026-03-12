@@ -4,6 +4,7 @@ const User = require("../models/user.model");
 const simplifyDebts = require("../utils/debt-simplifier");
 const { sendEmail } = require("../utils/email.service");
 const { newExpenseTemplate } = require("../utils/emailTemplates");
+const { FRONTEND_URL, buildFrontendRedirectUrl } = require("../config/app.config");
 
 const respondError = (res, status, message) =>
   res.status(status).json({ ok: false, message });
@@ -80,7 +81,11 @@ exports.createExpense = async (req, res, next) => {
 
     const creator = await User.findById(paidBy);
 
-    const baseUrl = "https://divisor-de-gastos.onrender.com";
+    const groupUrl = buildFrontendRedirectUrl({
+      redirect: "group-detail",
+      groupId,
+      expenseId: expense._id.toString()
+    });
     for (const member of group.members) {
       const { html, text } = newExpenseTemplate(
         member.name,
@@ -88,8 +93,8 @@ exports.createExpense = async (req, res, next) => {
         description,
         amountValue,
         creator ? creator.name : "",
-        `${baseUrl}/expenses/${expense._id}`,
-        `${baseUrl}/assets/logo.png`
+        groupUrl,
+        `${FRONTEND_URL}/src/assets/logo.png`
       );
 
       await sendEmail(member.email, "Nuevo gasto registrado", html, text);

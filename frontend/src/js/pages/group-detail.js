@@ -16,6 +16,12 @@ try {
   window.location.href = "login.html";
 }
 
+const urlParams = new URLSearchParams(window.location.search);
+const urlGroupId = urlParams.get("groupId");
+if (urlGroupId) {
+  localStorage.setItem("currentGroup", urlGroupId);
+}
+
 const groupId = localStorage.getItem("currentGroup");
 if (!groupId) window.location.href = "profile.html";
 

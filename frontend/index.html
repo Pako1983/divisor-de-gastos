@@ -36,9 +36,32 @@
 </div>
 
 
-  <script>
-    // Redirección inmediata al login
-    window.location.href = "src/templates/login.html";
+    <script>
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get("redirect");
+    const groupIdParam = params.get("groupId");
+    const expenseIdParam = params.get("expenseId");
+
+    const navigateToLogin = () => {
+      window.location.href = "src/templates/login.html";
+    };
+
+    if (redirect === "group-detail" && groupIdParam) {
+      const targetParams = new URLSearchParams({ groupId: groupIdParam });
+      if (expenseIdParam) {
+        targetParams.set("expenseId", expenseIdParam);
+      }
+      const redirectPath = `src/templates/group-detail.html?${targetParams.toString()}`;
+      localStorage.setItem("pendingRedirect", JSON.stringify({ url: redirectPath }));
+
+      if (localStorage.getItem("token")) {
+        window.location.href = redirectPath;
+      } else {
+        navigateToLogin();
+      }
+    } else {
+      navigateToLogin();
+    }
   </script>
 </body>
 </html>

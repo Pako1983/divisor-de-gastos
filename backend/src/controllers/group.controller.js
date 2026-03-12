@@ -3,6 +3,7 @@ const Group = require("../models/group.model");
 const Expense = require("../models/expense.model");
 const { sendEmail } = require("../utils/email.service");
 const { addedToGroupTemplate } = require("../utils/emailTemplates");
+const { FRONTEND_URL, buildFrontendRedirectUrl } = require("../config/app.config");
 
 const respondError = (res, status, message) =>
   res.status(status).json({ ok: false, message });
@@ -72,7 +73,7 @@ exports.searchUsers = async (req, res, next) => {
   }
 };
 
-// Añadir miembro
+// AÃ±adir miembro
 exports.addMember = async (req, res, next) => {
   try {
     const { groupId } = req.params;
@@ -88,11 +89,11 @@ exports.addMember = async (req, res, next) => {
     }
 
     if (group.createdBy.toString() !== req.userId) {
-      return respondError(res, 403, "Solo el creador puede añadir miembros");
+      return respondError(res, 403, "Solo el creador puede aÃ±adir miembros");
     }
 
     if (isGroupMember(group, userId)) {
-      return respondError(res, 409, "El usuario ya está en el grupo");
+      return respondError(res, 409, "El usuario ya estÃ¡ en el grupo");
     }
 
     const userToAdd = await User.findById(userId);
@@ -107,17 +108,22 @@ exports.addMember = async (req, res, next) => {
 
     const creator = await User.findById(req.userId);
 
+    const groupUrl = buildFrontendRedirectUrl({
+      redirect: "group-detail",
+      groupId: group._id.toString()
+    });
+
     const { html, text } = addedToGroupTemplate(
       userToAdd.name,
       group.name,
       creator ? creator.name : "",
-      `https://divisor-de-gastos.onrender.com/groups/${group._id}`,
-      "https://divisor-de-gastos.onrender.com/assets/logo.png"
+      groupUrl,
+      `${FRONTEND_URL}/src/assets/logo.png`
     );
 
-    await sendEmail(userToAdd.email, "Has sido añadido a un grupo", html, text);
+    await sendEmail(userToAdd.email, "Has sido aÃ±adido a un grupo", html, text);
 
-    return res.json({ ok: true, message: "Miembro añadido correctamente", group });
+    return res.json({ ok: true, message: "Miembro aÃ±adido correctamente", group });
   } catch (error) {
     next(error);
   }
@@ -152,7 +158,7 @@ exports.removeMember = async (req, res, next) => {
 
     return res.json({ ok: true, message: "Miembro eliminado correctamente" });
   } catch (error) {
-    console.error("🔥 ERROR AL ELIMINAR MIEMBRO:", error);
+    console.error("ðŸ”¥ ERROR AL ELIMINAR MIEMBRO:", error);
     return respondError(res, 500, "Error interno del servidor");
   }
 };
@@ -219,3 +225,5 @@ exports.getMyGroups = async (req, res, next) => {
     next(error);
   }
 };
+
+

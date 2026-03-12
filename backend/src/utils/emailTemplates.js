@@ -70,7 +70,7 @@ exports.newExpenseTemplate = (
   description,
   amount,
   createdBy,
-  expenseUrl,
+  viewUrl,
   logoUrl
 ) => {
 
@@ -83,7 +83,7 @@ Descripción: ${description}
 Monto: €${amount}
 Registrado por: ${createdBy}
 
-Puedes ver el gasto aquí: ${expenseUrl}
+Puedes ver los detalles del gasto y el grupo aquí: ${viewUrl}
 
 Divisor de Gastos © 2026
   `;
@@ -113,11 +113,11 @@ Divisor de Gastos © 2026
     </ul>
 
     <div style="text-align:center; margin-top:25px;">
-      <a href="${expenseUrl}"
+      <a href="${viewUrl}"
          style="background:#4CAF50; padding:12px 20px;
                 color:white; text-decoration:none;
                 border-radius:8px; font-weight:bold;">
-        Ver gasto
+        Ver el grupo
       </a>
     </div>
 
