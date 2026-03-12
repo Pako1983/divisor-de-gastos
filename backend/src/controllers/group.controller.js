@@ -45,6 +45,32 @@ exports.createGroup = async (req, res, next) => {
       { $addToSet: { groups: group._id } }
     );
 
+    const memberIdsToNotify = memberIds.filter((memberId) => memberId !== req.userId);
+    if (memberIdsToNotify.length) {
+      const usersToNotify = await User.find({ _id: { $in: memberIdsToNotify } });
+      const creator = await User.findById(req.userId);
+      const groupUrl = buildFrontendRedirectUrl({
+        redirect: "group-detail",
+        groupId: group._id.toString()
+      });
+      const creatorName = creator ? creator.name : "";
+      const logoUrl = `${FRONTEND_URL}/src/assets/logo.png`;
+
+      await Promise.all(
+        usersToNotify.map((member) => {
+          const { html, text } = addedToGroupTemplate(
+            member.name,
+            group.name,
+            creatorName,
+            groupUrl,
+            logoUrl
+          );
+
+          return sendEmail(member.email, "Has sido agregado a un grupo", html, text);
+        })
+      );
+    }
+
     return res.status(201).json({
       ok: true,
       message: "Grupo creado correctamente",
