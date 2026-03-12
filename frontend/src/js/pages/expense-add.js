@@ -110,10 +110,14 @@ async function saveExpense() {
       return showModal("Error", data.message || "No se pudo guardar el gasto.", "error");
     }
 
-    showModal("Éxito", "Gasto guardado correctamente.", "success");
-    setTimeout(() => {
-      window.location.href = "group-detail.html";
-    }, 1000);
+    showModal(
+      "�xito",
+      "Gasto guardado correctamente.",
+      "success",
+      () => {
+        window.location.href = "group-detail.html";
+      }
+    );
 
   } catch (err) {
     showModal("Error", "Error de conexión al guardar el gasto.", "error");
