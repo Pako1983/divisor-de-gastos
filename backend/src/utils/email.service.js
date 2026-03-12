@@ -1,27 +1,50 @@
-const nodemailer = require("nodemailer");
+const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+const SENDGRID_FROM = process.env.SENDGRID_FROM || process.env.EMAIL_USER;
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: process.env.SMTP_SECURE === "true", // true = 465, false = 587
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+const buildContent = (html, text) => {
+  const contents = [];
+  if (text) {
+    contents.push({ type: "text/plain", value: text });
   }
-});
+  if (html) {
+    contents.push({ type: "text/html", value: html });
+  }
+  if (!contents.length) {
+    contents.push({ type: "text/plain", value: "Divisor de Gastos" });
+  }
+  return contents;
+};
 
 // =========================
-//  ENVÃO DE EMAIL (HTML + TEXTO PLANO)
+//  ENVÍO DE EMAIL (SendGrid API)
 // =========================
 const sendEmail = async (to, subject, html, text = "") => {
+  if (!SENDGRID_API_KEY) {
+    console.warn("Skipping email send: SENDGRID_API_KEY not set");
+    return;
+  }
+
+  const payload = {
+    personalizations: [{ to: [{ email: to }] }],
+    from: { email: SENDGRID_FROM },
+    subject,
+    content: buildContent(html, text)
+  };
+
   try {
-    await transporter.sendMail({
-      from: `"Divisor de Gastos" <${process.env.EMAIL_USER}>`,
-      to,
-      subject,
-      html,
-      text
+    const response = await fetch("https://api.sendgrid.com/v3/mail/send", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + SENDGRID_API_KEY + "",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
     });
+
+    if (!response.ok) {
+      const body = await response.text();
+      throw new Error("SendGrid " + response.status + " " + response.statusText + ": " + body);
+    }
 
     console.log("Email enviado a:", to);
   } catch (error) {
@@ -30,6 +53,3 @@ const sendEmail = async (to, subject, html, text = "") => {
 };
 
 module.exports = { sendEmail };
-
-
-
