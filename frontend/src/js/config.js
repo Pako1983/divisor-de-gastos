@@ -5,8 +5,8 @@ const LOCAL_API = "http://localhost:4000/api";
 const LOCAL_FILES = "http://localhost:4000";
 
 // Valores por defecto para producción (reemplázalos o inyecta `window.APP_CONFIG`)
-const PROD_API = "https://[tu-dominio].com/api";
-const PROD_FILES = "https://[tu-dominio].com";
+const PROD_API = "https://divisor-de-gastos-backend.onrender.com/api";
+const PROD_FILES = "https://divisor-de-gastos-backend.onrender.com";
 
 const APP_CONFIG = window.APP_CONFIG ?? {};
 

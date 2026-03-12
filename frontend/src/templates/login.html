@@ -12,6 +12,11 @@
 
   <div id="logoContainer"></div>
   <script>
+    window.APP_CONFIG = window.APP_CONFIG || {
+      API_URL: "https://divisor-de-gastos-backend.onrender.com/api",
+      FILES_URL: "https://divisor-de-gastos-backend.onrender.com"
+    };
+
    fetch("../components/logo.html")
     .then(res => res.text())
     .then(html => {
