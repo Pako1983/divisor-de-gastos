@@ -111,8 +111,8 @@ exports.addMember = async (req, res, next) => {
       userToAdd.name,
       group.name,
       creator ? creator.name : "",
-      `https://tuapp.com/groups/${group._id}`,
-      "https://tuapp.com/logo.png"
+      `https://divisor-de-gastos.onrender.com/groups/${group._id}`,
+      "https://divisor-de-gastos.onrender.com/assets/logo.png"
     );
 
     await sendEmail(userToAdd.email, "Has sido añadido a un grupo", html, text);
