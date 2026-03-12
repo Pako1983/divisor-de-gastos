@@ -9,8 +9,9 @@ const respondError = (res, status, message) =>
   res.status(status).json({ ok: false, message });
 
 const normalizeParticipants = (participants) => {
-  if (!Array.isArray(participants)) return [];
-  return [...new Set(participants.map((p) => p && p.toString()).filter(Boolean))];
+  if (!participants) return [];
+  const list = Array.isArray(participants) ? participants : [participants];
+  return [...new Set(list.map((p) => p && p.toString()).filter(Boolean))];
 };
 
 const isGroupMember = (group, userId) =>
