@@ -2,24 +2,21 @@ import { showModal, showLogoutModal } from "../components/modal.js";
 import { API_URL } from "../config.js";
 
 
-// =========================
+
 //  VALIDACIÓN DE SESIÓN
-// =========================
 const token = localStorage.getItem("token");
 if (!token) window.location.href = "login.html";
 
-// =========================
+
 //  ELEMENTOS DEL DOM
-// =========================
 const searchInput = document.getElementById("userSearch");
 const autocomplete = document.getElementById("autocomplete");
 const chipsContainer = document.getElementById("chips");
 
 let selectedUsers = [];
 
-// =========================
+
 //  AUTOCOMPLETADO DE USUARIOS
-// =========================
 searchInput.addEventListener("input", async () => {
   const query = searchInput.value.trim();
 
@@ -65,9 +62,8 @@ searchInput.addEventListener("input", async () => {
   }
 });
 
-// =========================
+
 //  CREAR CHIP VISUAL
-// =========================
 function addChip(user) {
   const chip = document.createElement("div");
   chip.className = "chip";
@@ -85,9 +81,8 @@ function addChip(user) {
   chipsContainer.appendChild(chip);
 }
 
-// =========================
+
 //  CREAR GRUPO
-// =========================
 document.getElementById("createGroupBtn").onclick = async () => {
   const name = document.getElementById("groupName").value.trim();
 
@@ -129,16 +124,14 @@ document.getElementById("createGroupBtn").onclick = async () => {
   }
 };
 
-// =========================
+
 //  VOLVER AL PERFIL
-// =========================
 document.getElementById("backBtn").onclick = () => {
   window.location.href = "profile.html";
 };
 
-// =========================
+
 //  CERRAR SESIÓN
-// =========================
 document.getElementById("logoutBtn").onclick = () => {
   showLogoutModal();
 };

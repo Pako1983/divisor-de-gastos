@@ -20,15 +20,15 @@ const normalizeMemberId = (member) => {
 const isGroupMember = (group, userId) =>
   group.members.some((member) => normalizeMemberId(member) === userId);
 
-// Limpia la lista de miembros, elimina duplicados y asegura que el propio creador este incluido.
+// Limpia la lista de usuarios, elimina duplicados y asegura que el propio creador este incluido.
 const sanitizeMembers = (members, ownerId) => {
   if (!Array.isArray(members)) return [ownerId];
   const uniqueMembers = [...new Set(members.map((m) => m && m.toString()).filter(Boolean))];
   return [ownerId, ...uniqueMembers.filter((memberId) => memberId !== ownerId)];
 };
 
-// Crear grupo y notificar a los miembros iniciales agregados mediante email.
-exports.crearGrupo = async (req, res, next) => {
+// Crear grupo y notificar a los usuarios iniciales agregados mediante email.
+exports.createGroup = async (req, res, next) => {
   try {
     const { name, members } = req.body;
 
@@ -104,7 +104,7 @@ exports.searchUsers = async (req, res, next) => {
 };
 
 // Añadir usuario y enviar la notificación oportuna solo si el creador lo solicita.
-exports.agregarMiembro = async (req, res, next) => {
+exports.addMember = async (req, res, next) => {
   try {
     const { groupId } = req.params;
     const { userId } = req.body;
@@ -119,7 +119,7 @@ exports.agregarMiembro = async (req, res, next) => {
     }
 
     if (group.createdBy.toString() !== req.userId) {
-      return respondError(res, 403, "Solo el creador puede añadir miembros");
+      return respondError(res, 403, "Solo el creador puede añadir usuarios");
     }
 
     if (isGroupMember(group, userId)) {
@@ -159,8 +159,8 @@ exports.agregarMiembro = async (req, res, next) => {
   }
 };
 
-// Eliminar a un miembro del grupo cuando el creador lo decide (no se puede eliminar al creador).
-exports.eliminarMiembro = async (req, res, next) => {
+// Eliminar a un usuario del grupo cuando el creador lo decide (no se puede eliminar al creador).
+exports.removeMember = async (req, res, next) => {
   try {
     const { groupId, userId } = req.params;
 
@@ -170,7 +170,7 @@ exports.eliminarMiembro = async (req, res, next) => {
     }
 
     if (group.createdBy.toString() !== req.userId) {
-      return respondError(res, 403, "Solo el creador puede eliminar miembros");
+      return respondError(res, 403, "Solo el creador puede eliminar usuarios");
     }
 
     if (!isGroupMember(group, userId)) {
@@ -186,15 +186,15 @@ exports.eliminarMiembro = async (req, res, next) => {
 
     await User.findByIdAndUpdate(userId, { $pull: { groups: groupId } });
 
-    return res.json({ ok: true, message: "Miembro eliminado correctamente" });
+    return res.json({ ok: true, message: "Usario eliminado correctamente" });
   } catch (error) {
-    console.error("ERROR AL ELIMINAR MIEMBRO:", error);
+    console.error("ERROR AL ELIMINAR USUARIO:", error);
     return respondError(res, 500, "Error interno del servidor");
   }
 };
 
 // Eliminar todo el grupo, sus gastos y quitar la referencia en los usuarios.
-exports.eliminarGrupo = async (req, res, next) => {
+exports.deleteGroup = async (req, res, next) => {
   try {
     const { groupId } = req.params;
     const userId = req.userId;
@@ -221,7 +221,7 @@ exports.eliminarGrupo = async (req, res, next) => {
 };
 
 // Recuperar los datos completos de un grupo para mostrar detalles y participantes.
-exports.obtenerDetallesGrupo = async (req, res, next) => {
+exports.getGroupDetails = async (req, res, next) => {
   try {
     const { groupId } = req.params;
 
@@ -244,7 +244,7 @@ exports.obtenerDetallesGrupo = async (req, res, next) => {
 };
 
 // Listar todos los grupos a los que pertenece el usuario autenticado.
-exports.obtenerMisGrupos = async (req, res, next) => {
+exports.getMyGroups = async (req, res, next) => {
   try {
     const groups = await Group.find({ members: req.userId })
       .populate("members", "name avatar")

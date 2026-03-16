@@ -311,7 +311,7 @@ button:hover {
   opacity: 0.85;
 }
 
-/* 📱 Ajustes responsivos para modales y tarjetas */
+/*  Ajustes responsivos para modales y tarjetas */
 @media (max-width: 600px) {
   .modal-box {
     padding: 18px;
@@ -357,7 +357,7 @@ body.modal-open {
   filter: drop-shadow(0 0 12px rgba(62, 166, 255, 0.45));
 }
 
-/* 📱 Ajuste perfecto para móviles */
+/*  Ajuste perfecto para móviles */
 @media (max-width: 600px) {
   .app-logo img {
     width: 110px;
@@ -366,7 +366,7 @@ body.modal-open {
   }
 }
 
-/* 📱 Ajuste para tablets */
+/*  Ajuste para tablets */
 @media (min-width: 601px) and (max-width: 900px) {
   .app-logo img {
     width: 130px;

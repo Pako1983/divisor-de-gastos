@@ -19,7 +19,6 @@ const buildContent = (html, text) => {
 
 
 //  ENVIO DE EMAIL (SendGrid API)
-
 // Envia el correo y muestra errores de conexión si fallan las llamadas a la API.
 const sendEmail = async (to, subject, html, text = "") => {
   if (!SENDGRID_API_KEY) {

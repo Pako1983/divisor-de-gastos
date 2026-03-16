@@ -7,7 +7,7 @@ const connectDB = require("./config/db");
 // Puerto dinámico para producción y fijo para desarrollo
 const PORT = process.env.PORT || 4000;
 
-// Asegúrate de que los directorios de uploads existan
+// Directorios de uploads 
 const uploadsDir = path.join(__dirname, "uploads");
 const avatarDir = path.join(uploadsDir, "avatars");
 const receiptsDir = path.join(uploadsDir, "receipts");

@@ -39,7 +39,7 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
       return showModal("Error", data.message, "error");
     }
 
-    showModal("Registro exitoso", "Tu cuenta ha sido creada correctamente"); // feedback visual
+    showModal("Registro exitoso", "Tu cuenta ha sido creada correctamente");
 
     setTimeout(() => {
       window.location.href = "login.html";

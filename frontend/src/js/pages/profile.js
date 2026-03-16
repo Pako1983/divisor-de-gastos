@@ -2,17 +2,15 @@ import { showModal, showInputModal, showPasswordModal, showLogoutModal } from ".
 import { API_URL, FILES_URL } from "../config.js";
 
 
-// =========================
+
 //  VALIDACIÓN DE SESIÓN
-// =========================
 const token = localStorage.getItem("token");
 if (!token) window.location.href = "login.html";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
-// =========================
+
 //  MOSTRAR DATOS DEL USUARIO
-// =========================
 document.getElementById("userName").textContent = user.name;
 document.getElementById("userEmail").textContent = user.email;
 
@@ -20,9 +18,8 @@ document.getElementById("avatar").src = user.avatar
   ? `${FILES_URL}${user.avatar}`
   : "../assets/img/default-avatar.png";
 
-// =========================
+
 //  CARGAR GRUPOS DEL USUARIO
-// =========================
 async function loadGroups() {
   try {
     const res = await fetch(`${API_URL}/users/groups`, {
@@ -60,16 +57,13 @@ async function loadGroups() {
 
 loadGroups();
 
-// =========================
+
 //  CREAR GRUPO
-// =========================
 document.getElementById("createGroupBtn").onclick = () => {
   window.location.href = "group-create.html";
 };
 
-// =========================
 //  EDITAR NOMBRE
-// =========================
 document.getElementById("editNameBtn").onclick = () => {
   showInputModal("Editar nombre", "Nuevo nombre...", async (newName) => {
 
@@ -98,9 +92,8 @@ document.getElementById("editNameBtn").onclick = () => {
   });
 };
 
-// =========================
+
 //  CAMBIAR CONTRASEÑA
-// =========================
 document.getElementById("editPasswordBtn").onclick = () => {
   showPasswordModal(async (currentPassword, newPassword) => {
 
@@ -126,9 +119,8 @@ document.getElementById("editPasswordBtn").onclick = () => {
   });
 };
 
-// =========================
+
 //  CAMBIAR AVATAR
-// =========================
 document.getElementById("editAvatarBtn").onclick = () => {
   const input = document.createElement("input");
   input.type = "file";
@@ -165,9 +157,8 @@ document.getElementById("editAvatarBtn").onclick = () => {
   input.click();
 };
 
-// =========================
+
 //  CERRAR SESIÓN
-// =========================
 document.getElementById("logoutBtn").onclick = () => {
   showLogoutModal();
 };

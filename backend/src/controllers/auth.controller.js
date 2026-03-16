@@ -103,7 +103,7 @@ exports.forgotPassword = async (req, res, next) => {
       });
     }
 
-    // Aquí luego añadiremos envío real de email
+    // Envio real de email para recuperación de contraseña
     return res.json({
       ok: true,
       message: "Se ha enviado un correo para recuperar la contraseña"

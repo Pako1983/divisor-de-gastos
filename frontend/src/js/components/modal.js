@@ -1,6 +1,4 @@
-/// ===============================
 // OBTENER ELEMENTOS UNA SOLA VEZ
-// ===============================
 const modal = document.getElementById("globalModal");
 const modalTitle = document.getElementById("modalTitle");
 const modalMessage = document.getElementById("modalMessage");
@@ -8,9 +6,8 @@ const acceptBtn = document.getElementById("modalAccept");
 const cancelBtn = document.getElementById("modalCancel");
 
 
-// ===============================
+
 // MODAL SIMPLE (INFO / AVISO)
-// ===============================
 export function showModal(title, message, type = "info", onAccept = null, onCancel = null) {
   modalTitle.textContent = title;
   modalMessage.innerHTML = message;
@@ -46,9 +43,7 @@ export function showModal(title, message, type = "info", onAccept = null, onCanc
 }
 
 
-// ===============================
 // ÉXITO + REDIRECCIÓN AUTOMÁTICA
-// ===============================
 export function showSuccessAndRedirect(message, url, delay = 300) {
   showSuccess(message);
 
@@ -58,9 +53,7 @@ export function showSuccessAndRedirect(message, url, delay = 300) {
 }
 
 
-// ===============================
 // ATAJOS PARA MODALES SIMPLES
-// ===============================
 export function showSuccess(message) {
   showModal("Éxito", message, "success");
 }
@@ -79,9 +72,7 @@ export function showInfo(message) {
 
 
 
-// ===============================
 // MODAL DE CONFIRMACIÓN (PREGUNTAS)
-// ===============================
 export function showConfirmModal(title, message, onConfirm) {
   modalTitle.textContent = title;
   modalMessage.innerHTML = message;
@@ -109,9 +100,7 @@ export function showConfirmModal(title, message, onConfirm) {
 
 
 
-// ===============================
 // MODAL PARA INPUT (EDITAR NOMBRE)
-// ===============================
 export function showInputModal(title, placeholder, callback) {
   modalTitle.textContent = title;
 
@@ -157,9 +146,7 @@ export function showInputModal(title, placeholder, callback) {
 
 
 
-// ===============================
 // MODAL PARA CAMBIAR CONTRASEÑA
-// ===============================
 export function showPasswordModal(callback) {
   modalTitle.textContent = "Cambiar contraseña";
 
@@ -204,9 +191,7 @@ export function showPasswordModal(callback) {
 
 
 
-// ===============================
 // MODAL PARA CERRAR SESIÓN
-// ===============================
 export function showLogoutModal() {
   showConfirmModal(
     "Cerrar sesión",

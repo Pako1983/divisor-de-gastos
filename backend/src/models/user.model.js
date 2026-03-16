@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    // Email �nico usado para login y notificaciones.
+    // Email unico usado para login y notificaciones.
     email: {
       type: String,
       required: true,
@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema(
       trim: true,
       match: [/^\S+@\S+\.\S+$/, "Email inválido"]
     },
-    // Hash de contrase�a almacenado tras el registro.
+    // Hash de contraseña almacenado tras el registro.
     password: {
       type: String,
       required: true

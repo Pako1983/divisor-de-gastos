@@ -2,9 +2,8 @@ import { showModal, showConfirmModal, showLogoutModal, showSuccessAndRedirect, s
 import { API_URL, FILES_URL } from "../config.js";
 
 
-// =========================
+
 //  VALIDACIÓN DE SESIÓN
-// =========================
 const token = localStorage.getItem("token");
 if (!token) window.location.href = "login.html";
 
@@ -26,9 +25,8 @@ const groupId = localStorage.getItem("currentGroup");
 if (!groupId) window.location.href = "profile.html";
 
 
-// =========================
+
 //  ELEMENTOS NUEVOS
-// =========================
 const searchInput = document.getElementById("searchInput");
 const autocomplete = document.getElementById("autocomplete");
 const selectedUsersContainer = document.getElementById("selectedUsers");
@@ -37,9 +35,8 @@ const addUserBtn = document.getElementById("addUserBtn");
 let selectedUsers = [];
 
 
-// =========================
+
 //  FUNCIÓN: CHIP VISUAL
-// =========================
 function addChip(user) {
   const chip = document.createElement("div");
   chip.className = "chip";
@@ -59,9 +56,8 @@ function addChip(user) {
 }
 
 
-// =========================
+
 //  AUTOCOMPLETADO
-// =========================
 searchInput.addEventListener("input", async () => {
   const query = searchInput.value.trim();
 
@@ -108,9 +104,8 @@ searchInput.addEventListener("input", async () => {
 });
 
 
-// =========================
+
 //  AÑADIR USUARIO AL GRUPO
-// =========================
 addUserBtn.onclick = async () => {
   if (selectedUsers.length === 0) {
     return showModal("Aviso", "Selecciona un usuario primero.");
@@ -146,10 +141,7 @@ addUserBtn.onclick = async () => {
 
 
 
-
-// =========================
 //  ELIMINAR USUARIO DEL GRUPO
-// =========================
 async function removeUserFromGroup(userToRemoveId) {
   try {
     const res = await fetch(`${API_URL}/groups/${groupId}/remove-member/${userToRemoveId}`, {
@@ -174,10 +166,7 @@ async function removeUserFromGroup(userToRemoveId) {
 }
 
 
-
-// =========================
 //  CARGAR DETALLES DEL GRUPO
-// =========================
 async function loadGroup() {
   try {
     const res = await fetch(`${API_URL}/groups/${groupId}`, {
@@ -239,9 +228,8 @@ async function loadGroup() {
 }
 
 
-// =========================
+
 //  CARGAR GASTOS DEL GRUPO
-// =========================
 async function loadExpenses() {
   try {
     const res = await fetch(`${API_URL}/expenses/${groupId}`, {
@@ -326,9 +314,8 @@ async function loadExpenses() {
 }
 
 
-// =========================
+
 //  CARGAR BALANCES
-// =========================
 async function loadBalances() {
   try {
     const res = await fetch(`${API_URL}/expenses/${groupId}/balances`, {
@@ -369,9 +356,7 @@ async function loadBalances() {
 }
 
 
-// =========================
 //  MODAL DE RECIBO
-// =========================
 function openReceiptModal(receiptPath) {
   const modal = document.getElementById("receiptModal");
   const img = document.getElementById("receiptImage");
@@ -392,9 +377,8 @@ function openReceiptModal(receiptPath) {
 }
 
 
-// =========================
+
 //  EVENTOS DE BOTONES
-// =========================
 document.getElementById("deleteGroupBtn").onclick = () => {
   showConfirmModal(
     "Eliminar grupo",
@@ -423,9 +407,8 @@ document.getElementById("logoutBtn").onclick = () => showLogoutModal();
 
 
 
-// =========================
+
 //  EJECUCIÓN INICIAL
-// =========================
 loadGroup();
 loadExpenses();
 loadBalances();

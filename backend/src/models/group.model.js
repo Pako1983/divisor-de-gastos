@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-// Modelo que representa un grupo con sus miembros y gastos asociados.
+// Modelo que representa un grupo con sus usuarios y gastos asociados.
 const GroupSchema = new mongoose.Schema(
   {
     name: {

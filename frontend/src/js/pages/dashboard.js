@@ -11,9 +11,7 @@ const user = JSON.parse(localStorage.getItem("user"));
 const currentUserId = user?.id ?? user?._id;
 
 
-// ===============================
 //  CARGAR GRUPOS
-// ===============================
 async function loadGroups() {
   try {
     const res = await fetch(`${API_URL}/users/groups`, {
@@ -90,17 +88,13 @@ async function loadGroups() {
 loadGroups();
 
 
-// ===============================
 //  BOTÓN VOLVER
-// ===============================
 document.getElementById("backBtn").onclick = () => {
   window.location.href = "profile.html";
 };
 
 
-// ===============================
-//  CERRAR SESIÓN (CORREGIDO)
-// ===============================
+//  CERRAR SESIÓN 
 document.getElementById("logoutBtn").onclick = () => {
   showConfirmModal(
     "Cerrar sesión",

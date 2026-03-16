@@ -1,7 +1,7 @@
-// URL pública del frontend que se utiliza para construir enlaces dentro de los correos.
+// URL publica del frontend que se utiliza para construir enlaces dentro de los correos.
 const FRONTEND_URL = process.env.FRONTEND_URL || "https://divisor-de-gastos.onrender.com";
 
-// Genera un enlace completo que incluye los parámetros de redirección necesarios para el SPA.
+// Genera un enlace completo que incluye los parametros de redirecciÃ³n necesarios para el SPA.
 const buildFrontendRedirectUrl = (params) => {
   const url = new URL(FRONTEND_URL);
   url.search = new URLSearchParams(params).toString();

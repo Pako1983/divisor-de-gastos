@@ -1,4 +1,3 @@
-
 //  PLANTILLA: Añadido a un grupo
 exports.addedToGroupTemplate = (
   userName,

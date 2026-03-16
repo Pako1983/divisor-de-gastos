@@ -99,7 +99,7 @@
 }
 
 /* ============================================
-   📱 Ajustes para móviles
+    Ajustes para móviles
    ============================================ */
 
 @media (max-width: 600px) {
@@ -150,7 +150,7 @@
 }
 
 /* ============================================
-   📱 Tablets (pantallas medianas)
+   Tablets (pantallas medianas)
    ============================================ */
 
 @media (min-width: 601px) and (max-width: 900px) {
@@ -173,7 +173,7 @@
 }
 
 /* ============================================
-   🖥️ Escritorio grande
+    Escritorio grande
    ============================================ */
 
 @media (min-width: 1200px) {

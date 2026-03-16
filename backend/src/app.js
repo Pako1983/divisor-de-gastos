@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 //  ARCHIVOS ESTÁTICOS (UPLOADS)
-// Esto funciona en Windows, Linux, servidores y tu PC
+// Esto funciona en Windows, Linux, servidores y la PC local
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
