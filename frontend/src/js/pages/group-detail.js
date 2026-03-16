@@ -359,15 +359,22 @@ async function loadBalances() {
 //  MODAL DE RECIBO
 function openReceiptModal(receiptPath) {
   const modal = document.getElementById("receiptModal");
-  const img = document.getElementById("receiptImage");
+  const viewer = document.getElementById("receiptViewer");
   const closeBtn = document.getElementById("closeReceiptModal");
+  const url = `${FILES_URL}${receiptPath}`;
+  const isImage = /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(receiptPath);
 
-  img.src = `${FILES_URL}${receiptPath}`;
+  if (isImage) {
+    viewer.innerHTML = `<img src="${url}" alt="Recibo" class="receipt-image" />`;
+  } else {
+    viewer.innerHTML = `<a href="${url}" target="_blank" rel="noopener" class="receipt-link">Ver o descargar archivo</a>`;
+  }
+
   modal.classList.remove("hidden");
 
   const close = () => {
     modal.classList.add("hidden");
-    img.src = "";
+    viewer.innerHTML = "";
   };
 
   closeBtn.onclick = close;
@@ -375,6 +382,7 @@ function openReceiptModal(receiptPath) {
     if (e.target === modal) close();
   };
 }
+
 
 
 
