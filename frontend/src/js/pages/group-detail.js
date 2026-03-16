@@ -361,9 +361,9 @@ function openReceiptModal(receiptPath) {
   const modal = document.getElementById("receiptModal");
   const viewer = document.getElementById("receiptViewer");
   const closeBtn = document.getElementById("closeReceiptModal");
-  const imageExtensions = /\.(jpg|jpeg|png|gif|webp|bmp|svg|heic|heif)$/i;
+  const imageExtensions = /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i;
   const isImage = imageExtensions.test(receiptPath);
-  const linkExtensions = /\.(pdf|docx?|xlsx?|zip|rar)$/i;
+  const linkExtensions = /\.(pdf|docx?|xlsx?|zip|rar|heic|heif)$/i;
   const showDownloadLink = linkExtensions.test(receiptPath);
   const url = `${FILES_URL}${receiptPath}`;
 
