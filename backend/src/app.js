@@ -19,7 +19,17 @@ app.use(express.urlencoded({ extended: true }));
 
 //  ARCHIVOS ESTÁTICOS (UPLOADS)
 // Esto funciona en Windows, Linux, servidores y la PC local
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+const uploadsRoot = path.join(__dirname, "uploads");
+const ensureDir = (dir) => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+};
+ensureDir(uploadsRoot);
+ensureDir(path.join(uploadsRoot, "receipts"));
+ensureDir(path.join(uploadsRoot, "avatars"));
+
+app.use("/uploads", express.static(uploadsRoot));
 
 
 
