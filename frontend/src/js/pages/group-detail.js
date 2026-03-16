@@ -361,13 +361,17 @@ function openReceiptModal(receiptPath) {
   const modal = document.getElementById("receiptModal");
   const viewer = document.getElementById("receiptViewer");
   const closeBtn = document.getElementById("closeReceiptModal");
+  const imageExtensions = /\.(jpg|jpeg|png|gif|webp|bmp|svg|heic|heif)$/i;
+  const isImage = imageExtensions.test(receiptPath);
+  const linkExtensions = /\.(pdf|docx?|xlsx?|zip|rar)$/i;
+  const showDownloadLink = linkExtensions.test(receiptPath);
   const url = `${FILES_URL}${receiptPath}`;
-  const isImage = /\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i.test(receiptPath);
 
   if (isImage) {
     viewer.innerHTML = `<img src="${url}" alt="Recibo" class="receipt-image" />`;
   } else {
-    viewer.innerHTML = `<a href="${url}" target="_blank" rel="noopener" class="receipt-link">Ver o descargar archivo</a>`;
+    const downloadLabel = showDownloadLink ? "Ver o descargar archivo" : "Descargar archivo";
+    viewer.innerHTML = `<div class="receipt-link-wrapper"><a href="${url}" target="_blank" rel="noopener" class="receipt-link" download>${downloadLabel}</a></div>`;
   }
 
   modal.classList.remove("hidden");
