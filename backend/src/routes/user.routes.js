@@ -13,9 +13,8 @@ const {
   getUserGroups
 } = require("../controllers/user.controller");
 
-// =========================
+
 //  CONFIGURACIÓN DE MULTER
-// =========================
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "../uploads/avatars"));
@@ -27,9 +26,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// =========================
+
 //  RUTAS PROTEGIDAS
-// =========================
 router.get("/profile", auth, getProfile);
 router.put("/update-name", auth, updateName);
 router.put("/update-password", auth, updatePassword);

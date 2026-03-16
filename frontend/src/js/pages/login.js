@@ -1,9 +1,11 @@
 import { showModal } from "../components/modal.js";
 import { API_URL } from "../config.js";
 
+// Ruta guardada por otros flujos para redireccionar despu�s del login.
 const pendingRedirect = JSON.parse(localStorage.getItem("pendingRedirect") || "null");
 
 
+// Captura el submit del formulario, valida credenciales y consume la API de login.
 document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -17,7 +19,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
       body: JSON.stringify({ email, password })
     });
 
-    // Si el servidor devuelve un error HTTP
+    // Si el servidor responde con error HTTP (4xx/5xx)
     if (!res.ok) {
       const errorData = await res.json().catch(() => null);
       return showModal("Error", errorData?.message || "Error en el servidor", "error");
@@ -29,7 +31,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
       return showModal("Error", data.message, "error");
     }
 
-    // Guardar token y usuario
+    // Si el login fue exitoso, guardamos token y user en localStorage
     localStorage.setItem("token", data.token);
     localStorage.setItem("user", JSON.stringify(data.user));
 

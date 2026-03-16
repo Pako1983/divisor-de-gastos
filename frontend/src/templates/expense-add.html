@@ -21,6 +21,7 @@
   </script>
 
 
+  <!-- Contenedor principal de la vista de nuevo gasto. -->
   <div class="expense-add-container">
 
     <!-- BOTÓN VOLVER CENTRADO -->
@@ -56,8 +57,9 @@
 
     <!-- RECIBO -->
     <label>Foto del recibo (opcional)</label>
-    <input type="file" id="receipt" accept="image/*" class="expense-input">
+    <input type="file" id="receipt" accept="*/*" class="expense-input">
 
+    <!-- Bot�n para enviar el formulario y guardar el gasto. -->
     <!-- GUARDAR GASTO CENTRADO -->
     <div class="save-expense-container">
       <button id="saveExpenseBtn" class="btn btn-primary">Guardar Gasto</button>
@@ -83,7 +85,8 @@
     </div>
   </div>
 
-  <nav class="bottom-nav">
+  <!-- Navegaci�n inferior compartida entre vistas principales. -->
+<nav class="bottom-nav">
   <button onclick="window.location.href='dashboard.html'">
     <i class="icon">🏠</i>
     <span>Inicio</span>
@@ -104,5 +107,6 @@
   <script type="module" src="../js/pages/expense-add.js"></script>
 </body>
 </html>
+
 
 

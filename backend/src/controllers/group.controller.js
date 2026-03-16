@@ -5,26 +5,30 @@ const { sendEmail } = require("../utils/email.service");
 const { addedToGroupTemplate } = require("../utils/emailTemplates");
 const { FRONTEND_URL, buildFrontendRedirectUrl } = require("../config/app.config");
 
+// Responde errores de la misma forma en todas las rutas.
 const respondError = (res, status, message) =>
   res.status(status).json({ ok: false, message });
 
+// Normaliza la referencia de un miembro para comparar IDs sin errores.
 const normalizeMemberId = (member) => {
   if (!member) return null;
   if (member._id) return member._id.toString();
   return member.toString();
 };
 
+// Verifica si un usuario forma parte de un grupo concreto.
 const isGroupMember = (group, userId) =>
   group.members.some((member) => normalizeMemberId(member) === userId);
 
+// Limpia la lista de miembros, elimina duplicados y asegura que el propio creador este incluido.
 const sanitizeMembers = (members, ownerId) => {
   if (!Array.isArray(members)) return [ownerId];
   const uniqueMembers = [...new Set(members.map((m) => m && m.toString()).filter(Boolean))];
   return [ownerId, ...uniqueMembers.filter((memberId) => memberId !== ownerId)];
 };
 
-// Crear grupo
-exports.createGroup = async (req, res, next) => {
+// Crear grupo y notificar a los miembros iniciales agregados mediante email.
+exports.crearGrupo = async (req, res, next) => {
   try {
     const { name, members } = req.body;
 
@@ -81,7 +85,7 @@ exports.createGroup = async (req, res, next) => {
   }
 };
 
-// Buscar usuarios (autocompletado)
+// Buscar usuarios que coincidan con el texto ingresado para autocompletar el selector.
 exports.searchUsers = async (req, res, next) => {
   try {
     const { q } = req.query;
@@ -99,8 +103,8 @@ exports.searchUsers = async (req, res, next) => {
   }
 };
 
-// AÃ±adir miembro
-exports.addMember = async (req, res, next) => {
+// Añadir usuario y enviar la notificación oportuna solo si el creador lo solicita.
+exports.agregarMiembro = async (req, res, next) => {
   try {
     const { groupId } = req.params;
     const { userId } = req.body;
@@ -115,11 +119,11 @@ exports.addMember = async (req, res, next) => {
     }
 
     if (group.createdBy.toString() !== req.userId) {
-      return respondError(res, 403, "Solo el creador puede aÃ±adir miembros");
+      return respondError(res, 403, "Solo el creador puede añadir miembros");
     }
 
     if (isGroupMember(group, userId)) {
-      return respondError(res, 409, "El usuario ya estÃ¡ en el grupo");
+      return respondError(res, 409, "El usuario ya esta en el grupo");
     }
 
     const userToAdd = await User.findById(userId);
@@ -147,16 +151,16 @@ exports.addMember = async (req, res, next) => {
       `${FRONTEND_URL}/src/assets/logo.png`
     );
 
-    await sendEmail(userToAdd.email, "Has sido aÃ±adido a un grupo", html, text);
+    await sendEmail(userToAdd.email, "Has sido añadido a un grupo", html, text);
 
-    return res.json({ ok: true, message: "Miembro aÃ±adido correctamente", group });
+    return res.json({ ok: true, message: "Usuario añadido correctamente", group });
   } catch (error) {
     next(error);
   }
 };
 
-// Eliminar miembro
-exports.removeMember = async (req, res, next) => {
+// Eliminar a un miembro del grupo cuando el creador lo decide (no se puede eliminar al creador).
+exports.eliminarMiembro = async (req, res, next) => {
   try {
     const { groupId, userId } = req.params;
 
@@ -184,13 +188,13 @@ exports.removeMember = async (req, res, next) => {
 
     return res.json({ ok: true, message: "Miembro eliminado correctamente" });
   } catch (error) {
-    console.error("ðŸ”¥ ERROR AL ELIMINAR MIEMBRO:", error);
+    console.error("ERROR AL ELIMINAR MIEMBRO:", error);
     return respondError(res, 500, "Error interno del servidor");
   }
 };
 
-// Eliminar grupo
-exports.deleteGroup = async (req, res, next) => {
+// Eliminar todo el grupo, sus gastos y quitar la referencia en los usuarios.
+exports.eliminarGrupo = async (req, res, next) => {
   try {
     const { groupId } = req.params;
     const userId = req.userId;
@@ -216,8 +220,8 @@ exports.deleteGroup = async (req, res, next) => {
   }
 };
 
-// Obtener detalles del grupo
-exports.getGroupDetails = async (req, res, next) => {
+// Recuperar los datos completos de un grupo para mostrar detalles y participantes.
+exports.obtenerDetallesGrupo = async (req, res, next) => {
   try {
     const { groupId } = req.params;
 
@@ -239,8 +243,8 @@ exports.getGroupDetails = async (req, res, next) => {
   }
 };
 
-// Listar grupos del usuario
-exports.getMyGroups = async (req, res, next) => {
+// Listar todos los grupos a los que pertenece el usuario autenticado.
+exports.obtenerMisGrupos = async (req, res, next) => {
   try {
     const groups = await Group.find({ members: req.userId })
       .populate("members", "name avatar")

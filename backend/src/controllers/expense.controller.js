@@ -6,22 +6,24 @@ const { sendEmail } = require("../utils/email.service");
 const { newExpenseTemplate } = require("../utils/emailTemplates");
 const { FRONTEND_URL, buildFrontendRedirectUrl } = require("../config/app.config");
 
+// Responde los errores de forma uniforme con el mismo esquema JSON.
 const respondError = (res, status, message) =>
   res.status(status).json({ ok: false, message });
 
+// Normaliza la lista de participantes eliminando duplicados y respetando el formato del backend.
 const normalizeParticipants = (participants) => {
   if (!participants) return [];
   const list = Array.isArray(participants) ? participants : [participants];
   return [...new Set(list.map((p) => p && p.toString()).filter(Boolean))];
 };
 
+// Verifica que un miembro con el ID dado pertenezca al grupo.
 const isGroupMember = (group, userId) =>
   group.members.some((member) => member._id.toString() === userId);
 
-// ===============================
-// CREAR GASTO
-// ===============================
-exports.createExpense = async (req, res, next) => {
+
+// CREAR GASTO: valida campos, guarda el gasto, actualiza el grupo y notifica por email.
+exports.crearGasto = async (req, res, next) => {
   try {
     const { groupId, description, amount, paidBy, participants } = req.body;
     const amountValue = Number(amount);
@@ -110,10 +112,9 @@ exports.createExpense = async (req, res, next) => {
   }
 };
 
-// ===============================
-// OBTENER GASTOS DE UN GRUPO
-// ===============================
-exports.getGroupExpenses = async (req, res, next) => {
+
+// OBTENER GASTOS DE UN GRUPO: devuelve los gastos mas recientes con detalles de pagador y participantes.
+exports.obtenerGastosGrupo = async (req, res, next) => {
   try {
     const { groupId } = req.params;
 
@@ -137,10 +138,9 @@ exports.getGroupExpenses = async (req, res, next) => {
   }
 };
 
-// ===============================
-// CALCULAR BALANCES SIMPLIFICADOS
-// ===============================
-exports.calculateBalances = async (req, res, next) => {
+
+// CALCULAR BALANCES SIMPLIFICADOS: usa los gastos registrados para generar deudas netas entre miembros.
+exports.calcularBalances = async (req, res, next) => {
   try {
     const { groupId } = req.params;
 
@@ -182,10 +182,9 @@ exports.calculateBalances = async (req, res, next) => {
   }
 };
 
-// ===============================
-// ELIMINAR GASTO
-// ===============================
-exports.deleteExpense = async (req, res, next) => {
+
+// ELIMINAR GASTO: solo el pagador o el creador pueden borrar un gasto y se actualiza el grupo.
+exports.eliminarGasto = async (req, res, next) => {
   try {
     const { expenseId } = req.params;
 

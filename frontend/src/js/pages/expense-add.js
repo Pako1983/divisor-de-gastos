@@ -5,15 +5,18 @@ import { API_URL } from "../config.js";
 // =========================
 //  VALIDACIÓN DE SESIÓN
 // =========================
+// Verifica la sesi�n existente; sin token redirige al login.
 const token = localStorage.getItem("token");
 if (!token) window.location.href = "login.html";
 
+// Recupera el grupo actualmente activo; el perfil debe existir para continuar.
 const groupId = localStorage.getItem("currentGroup");
 if (!groupId) window.location.href = "profile.html";
 
 // =========================
 //  ELEMENTOS DEL DOM
 // =========================
+// Referencias a elementos del DOM utilizados para el formulario y el autocompletado.
 const searchInput = document.getElementById("searchMember");
 const autocomplete = document.getElementById("autocomplete");
 const chipsContainer = document.getElementById("chips");
@@ -24,6 +27,7 @@ let selectedParticipants = [];
 // =========================
 //  CARGAR MIEMBROS DEL GRUPO
 // =========================
+// Carga los miembros del grupo y rellena el selector de pagadores disponibles.
 async function loadMembers() {
   try {
     const res = await fetch(`${API_URL}/groups/${groupId}`, {
@@ -59,6 +63,7 @@ loadMembers();
 // =========================
 //  GUARDAR GASTO
 // =========================
+// Env�a el gasto al backend validando campos, adjuntando recibo y mostrando feedback.
 async function saveExpense() {
   const description = document.getElementById("description").value.trim();
   const amount = parseFloat(document.getElementById("amount").value);
@@ -127,6 +132,7 @@ async function saveExpense() {
 // =========================
 //  AUTOCOMPLETADO
 // =========================
+// Gestiona el autocompletado mientras el usuario escribe para a�adir participantes manualmente.
 searchInput.addEventListener("input", () => {
   const query = searchInput.value.toLowerCase().trim();
 
@@ -166,6 +172,7 @@ searchInput.addEventListener("input", () => {
 // =========================
 //  CHIPS
 // =========================
+// Crea un chip visual para cada participante seleccionado y permite eliminarlo f�cilmente.
 function addChip(user) {
   const chip = document.createElement("div");
   chip.className = "chip";

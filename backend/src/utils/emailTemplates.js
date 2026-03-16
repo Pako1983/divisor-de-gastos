@@ -1,6 +1,5 @@
-// ===============================
+
 //  PLANTILLA: Añadido a un grupo
-// ===============================
 exports.addedToGroupTemplate = (
   userName,
   groupName,
@@ -61,9 +60,8 @@ Divisor de Gastos © 2026
 };
 
 
-// ===============================
+
 //  PLANTILLA: Nuevo gasto
-// ===============================
 exports.newExpenseTemplate = (
   userName,
   groupName,

@@ -21,6 +21,7 @@
   </script>
 
 
+  <!-- Vista principal donde se muestran miembros, gastos y acciones del grupo. -->
   <div class="group-detail-container">
 
     <div class="top-buttons">
@@ -81,7 +82,7 @@
   <div id="receiptModal" class="receipt-modal hidden">
     <div class="receipt-modal-content">
       <span id="closeReceiptModal" class="receipt-modal-close">&times;</span>
-      <img id="receiptImage" src="" alt="Recibo" />
+      <div id="receiptViewer" class="receipt-viewer"></div>
     </div>
   </div>
 
@@ -98,6 +99,7 @@
   </div>
 </div>
 
+<!-- Navegaci�n inferior compartida entre vistas principales. -->
 <nav class="bottom-nav">
   <button onclick="window.location.href='dashboard.html'">
     <i class="icon">🏠</i>

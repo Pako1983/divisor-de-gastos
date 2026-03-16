@@ -1,19 +1,22 @@
-Ôªø// Detecta si est√°s trabajando en local (puedes ampliar la lista si usas hosts personalizados)
+// Detecta si la app est· en local para ajustar autom·ticamente las URLs de la API y los archivos.
 const isLocal = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 
 const LOCAL_API = "http://localhost:4000/api";
-const LOCAL_FILES = "http://localhost:4000";
+const LOCAL_FILES = "http://localhost:4000"; // URLs para pruebas locales con el backend en el puerto 4000.
 
-// Valores por defecto para producci√≥n (reempl√°zalos o inyecta `window.APP_CONFIG`)
+// Valores por defecto para producciÛn (puedes sobrescribirlos con window.APP_CONFIG).
 const PROD_API = "https://divisor-de-gastos-backend.onrender.com/api";
 const PROD_FILES = "https://divisor-de-gastos-backend.onrender.com";
 
 const APP_CONFIG = window.APP_CONFIG ?? {};
 
-// URL base de la API
+// URL base de la API que consume todo el frontend.
 export const API_URL =
   APP_CONFIG.API_URL || (isLocal ? LOCAL_API : PROD_API);
 
-// URL base para cargar archivos (recibos, avatares, etc.)
+// URL base para cargar recursos est?ticos alojados en el backend y servir recibos/avatares.
 export const FILES_URL =
   APP_CONFIG.FILES_URL || (isLocal ? LOCAL_FILES : PROD_FILES);
+
+
+

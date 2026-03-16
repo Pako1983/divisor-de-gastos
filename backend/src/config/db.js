@@ -1,21 +1,21 @@
 const mongoose = require("mongoose");
 
+// Conecta con MongoDB Atlas usando la URI segura en variables de entorno.
+// Las opciones siguientes equilibran seguridad y latencia en un entorno de hobby/free.
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
-      // Opciones recomendadas para producci√≥n
-      autoIndex: false,          // evita crear √≠ndices autom√°ticamente en producci√≥n
-      maxPoolSize: 10,           // conexiones simult√°neas
-      serverSelectionTimeoutMS: 5000, // tiempo m√°ximo para conectar
-      socketTimeoutMS: 45000,    // tiempo m√°ximo de inactividad
+      autoIndex: false,              // evita reindexaciones autom·ticas en cada arranque.
+      maxPoolSize: 10,               // n˙mero m·ximo de conexiones simult·neas manejadas.
+      serverSelectionTimeoutMS: 5000, // cu·nto espera antes de fallar si no encuentra el servidor.
+      socketTimeoutMS: 45000,        // tiempo m·ximo de inactividad antes de cerrar un socket.
     });
 
-    console.log("‚úÖ MongoDB conectado correctamente");
+    console.log("MongoDB conectado correctamente");
   } catch (error) {
-    console.error("‚ùå Error al conectar a MongoDB:", error.message);
+    console.error("Error al conectar a MongoDB:", error.message);
     process.exit(1);
   }
 };
 
 module.exports = connectDB;
-

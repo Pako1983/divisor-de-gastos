@@ -1,6 +1,8 @@
+// Configura la API key y el remitente que usar SendGrid (puede venir de SENDGRID_FROM o EMAIL_USER).
 const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
 const SENDGRID_FROM = process.env.SENDGRID_FROM || process.env.EMAIL_USER;
 
+// Genera el contenido HTML/texto para SendGrid segun la plantilla que se envia.
 const buildContent = (html, text) => {
   const contents = [];
   if (text) {
@@ -15,9 +17,10 @@ const buildContent = (html, text) => {
   return contents;
 };
 
-// =========================
-//  ENVÍO DE EMAIL (SendGrid API)
-// =========================
+
+//  ENVIO DE EMAIL (SendGrid API)
+
+// Envia el correo y muestra errores de conexiÃ³n si fallan las llamadas a la API.
 const sendEmail = async (to, subject, html, text = "") => {
   if (!SENDGRID_API_KEY) {
     console.warn("Skipping email send: SENDGRID_API_KEY not set");

@@ -11,6 +11,7 @@
 
 <body>
 
+  <!-- Inserta el logo shared a trav�s de fetch cuando la p�gina carga. -->
   <div id="logoContainer"></div>
   <script>
    fetch("../components/logo.html")
@@ -21,10 +22,12 @@
   </script>
 
 
+    <!-- Vista principal del resumen global con estad�sticas y listado de grupos. -->
   <div class="container">
 
     <h1>Resumen Global</h1>
 
+        <!-- Tarjetas de estad�sticas -->
     <div class="stats">
       <div class="stat-card positive">
         <h3>Te deben</h3>
@@ -45,6 +48,7 @@
     <hr>
 
     <h2>Mis Grupos</h2>
+        <!-- Lista de grupos actuales que se rellena din�micamente. -->
     <div id="groupsList" class="groups-list"></div>
 
     <button id="backBtn" class="btn-secondary">Volver al Perfil</button>
@@ -64,6 +68,7 @@
   </div>
 </div>
 
+<!-- Navegaci�n inferior compartida entre vistas principales. -->
 <nav class="bottom-nav">
   <button onclick="window.location.href='dashboard.html'">
     <i class="icon">🏠</i>

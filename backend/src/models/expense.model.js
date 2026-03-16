@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Esquema que guarda cada gasto asociado a un grupo y sus participantes.
 const ExpenseSchema = new mongoose.Schema(
   {
     group: {

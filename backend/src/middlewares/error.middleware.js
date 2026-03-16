@@ -1,7 +1,7 @@
 module.exports = (err, req, res, next) => {
   console.error("🔥 ERROR:", err);
 
-  // Si el error ya tiene un código de estado, úsalo
+  // Si el error ya tiene un código de estado
   const status = err.statusCode || 500;
 
   res.status(status).json({

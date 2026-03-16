@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Modelo que representa un grupo con sus miembros y gastos asociados.
 const GroupSchema = new mongoose.Schema(
   {
     name: {
@@ -11,12 +12,14 @@ const GroupSchema = new mongoose.Schema(
       ref: "User",
       required: true
     },
+        // IDs de los usuarios que pertenecen al grupo.
     members: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
       }
     ],
+        // Referencias a los gastos registrados dentro del grupo.
     expenses: [
       {
         type: mongoose.Schema.Types.ObjectId,

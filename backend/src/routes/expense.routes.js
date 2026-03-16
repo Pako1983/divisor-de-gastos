@@ -2,17 +2,16 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  createExpense,
-  getGroupExpenses,
-  calculateBalances,
-  deleteExpense
+  crearGasto,
+  obtenerGastosGrupo,
+  calcularBalances,
+  eliminarGasto
 } = require("../controllers/expense.controller");
 
 const auth = require("../middlewares/auth.middleware");
 
-// =========================
+
 //  CONFIGURACIÓN DE MULTER
-// =========================
 const multer = require("multer");
 const path = require("path");
 
@@ -31,35 +30,34 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 
-// =========================
-//  RUTAS DE GASTOS
-// =========================
 
+//  RUTAS DE GASTOS
 // Crear gasto (con recibo opcional)
 router.post(
   "/create",
   auth,
   upload.single("receipt"),
-  createExpense
+  crearGasto
 );
 
 // Obtener gastos del grupo
 router.get(
   "/:groupId",
   auth,
-  getGroupExpenses
+  obtenerGastosGrupo
 );
 
 // Obtener balances simplificados
 router.get(
   "/:groupId/balances",
   auth,
-  calculateBalances
+  calcularBalances
 );
 
 // Eliminar gasto
-router.delete("/:expenseId", auth, deleteExpense);
+router.delete("/:expenseId", auth, eliminarGasto);
 
 module.exports = router;
+
 
 
