@@ -8,15 +8,37 @@ const token = localStorage.getItem("token");
 if (!token) window.location.href = "login.html";
 
 const user = JSON.parse(localStorage.getItem("user"));
+const DEFAULT_AVATAR =
+  "data:image/svg+xml;charset=UTF-8," +
+  encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+      <rect width="120" height="120" rx="60" fill="#1b222c"/>
+      <circle cx="60" cy="46" r="22" fill="#4aa3ff"/>
+      <path d="M26 102c5-20 19-30 34-30s29 10 34 30" fill="#4aa3ff"/>
+      <text x="60" y="116" text-anchor="middle" font-family="Arial" font-size="12" fill="#c9d4e5">Avatar</text>
+    </svg>
+  `);
+
+const avatarImg = document.getElementById("avatar");
+const setAvatarSrc = (avatarPath) => {
+  const normalizedPath = avatarPath
+    ? `${FILES_URL}${avatarPath.startsWith("/") ? avatarPath : `/${avatarPath}`}`
+    : DEFAULT_AVATAR;
+
+  avatarImg.onerror = () => {
+    avatarImg.onerror = null;
+    avatarImg.src = DEFAULT_AVATAR;
+  };
+
+  avatarImg.src = normalizedPath;
+};
 
 
 //  MOSTRAR DATOS DEL USUARIO
 document.getElementById("userName").textContent = user.name;
 document.getElementById("userEmail").textContent = user.email;
 
-document.getElementById("avatar").src = user.avatar
-  ? `${FILES_URL}${user.avatar}`
-  : "../assets/img/default-avatar.png";
+setAvatarSrc(user.avatar);
 
 
 //  CARGAR GRUPOS DEL USUARIO
@@ -149,7 +171,7 @@ document.getElementById("editAvatarBtn").onclick = () => {
     if (!data.ok) return showModal("Error", data.message, "error");
 
     localStorage.setItem("user", JSON.stringify(data.user));
-    document.getElementById("avatar").src = `${FILES_URL}${data.user.avatar}`;
+    setAvatarSrc(data.user.avatar);
 
     showModal("Éxito", "Avatar actualizado correctamente");
   };
