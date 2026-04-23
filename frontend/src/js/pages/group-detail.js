@@ -368,8 +368,7 @@ function openReceiptModal(receiptPath) {
   const url = `${FILES_URL}${receiptPath}`;
 
   if (isImage) {
-    window.open(url, "_blank", "noopener,noreferrer");
-    return;
+    viewer.innerHTML = `<img src="${url}" alt="Recibo" class="receipt-image" />`;
   } else {
     const downloadLabel = showDownloadLink ? "Ver o descargar archivo" : "Descargar archivo";
     viewer.innerHTML = `<div class="receipt-link-wrapper"><a href="${url}" target="_blank" rel="noopener" class="receipt-link">${downloadLabel}</a></div>`;
@@ -425,7 +424,6 @@ document.getElementById("logoutBtn").onclick = () => showLogoutModal();
 loadGroup();
 loadExpenses();
 loadBalances();
-
 
 
 

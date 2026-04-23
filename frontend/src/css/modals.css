@@ -104,6 +104,11 @@
   display: block;
 }
 
+.receipt-image {
+  margin: 0 auto;
+  object-fit: contain;
+}
+
 .receipt-modal-close {
   position: absolute;
   top: 8px;
