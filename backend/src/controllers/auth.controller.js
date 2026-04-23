@@ -37,13 +37,17 @@ exports.register = async (req, res, next) => {
       console.log("Intentando enviar correo de bienvenida a:", newUser.email);
       const logoUrl = `${FRONTEND_URL}/src/assets/logo.png`;
       const { html, text } = welcomeRegisterTemplate(newUser.name, logoUrl);
-      await sendEmail(
+      const emailResult = await sendEmail(
         newUser.email,
         "Confirmación de registro y bienvenida - Divisor de Gastos",
         html,
         text
       );
-      console.log("Correo de bienvenida procesado para:", newUser.email);
+      if (emailResult && emailResult.ok) {
+        console.log("Correo de bienvenida enviado correctamente a:", newUser.email);
+      } else {
+        console.warn("El correo de bienvenida no se pudo enviar a:", newUser.email);
+      }
     } catch (emailError) {
       console.error("Error enviando correo de bienvenida:", emailError);
     }

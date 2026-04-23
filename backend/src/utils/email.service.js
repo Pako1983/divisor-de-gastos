@@ -23,7 +23,7 @@ const buildContent = (html, text) => {
 const sendEmail = async (to, subject, html, text = "") => {
   if (!SENDGRID_API_KEY) {
     console.warn("Skipping email send: SENDGRID_API_KEY not set");
-    return;
+    return { ok: false, skipped: true, reason: "SENDGRID_API_KEY not set" };
   }
 
   const payload = {
@@ -49,8 +49,10 @@ const sendEmail = async (to, subject, html, text = "") => {
     }
 
     console.log("Email enviado a:", to);
+    return { ok: true };
   } catch (error) {
     console.error("Error enviando email:", error);
+    return { ok: false, error };
   }
 };
 
