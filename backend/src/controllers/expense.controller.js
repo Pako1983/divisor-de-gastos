@@ -1,6 +1,7 @@
-﻿const Expense = require("../models/expense.model");
+const Expense = require("../models/expense.model");
 const Group = require("../models/group.model");
 const User = require("../models/user.model");
+const Settlement = require("../models/settlement.model");
 const simplifyDebts = require("../utils/debt-simplifier");
 const { sendEmail } = require("../utils/email.service");
 const { newExpenseTemplate } = require("../utils/emailTemplates");
@@ -20,6 +21,49 @@ const normalizeParticipants = (participants) => {
 // Verifica que un usuario con el ID dado pertenezca al grupo.
 const isGroupMember = (group, userId) =>
   group.members.some((member) => member._id.toString() === userId);
+
+// Calcula el estado actual de las deudas del grupo incluyendo gastos y liquidaciones.
+const getGroupBalanceSnapshot = async (groupId) => {
+  const group = await Group.findById(groupId).populate("members", "name email");
+  if (!group) {
+    return { group: null, balances: [] };
+  }
+
+  const expenses = await Expense.find({ group: groupId });
+  const settlements = await Settlement.find({ group: groupId });
+
+  const balances = {};
+  group.members.forEach((member) => {
+    balances[member._id.toString()] = 0;
+  });
+
+  expenses.forEach((exp) => {
+    if (!Array.isArray(exp.participants) || exp.participants.length === 0) return;
+
+    const amountPerPerson = exp.amount / exp.participants.length;
+    const payerId = exp.paidBy.toString();
+
+    exp.participants.forEach((p) => {
+      const participantId = p.toString();
+      if (participantId !== payerId) {
+        balances[participantId] -= amountPerPerson;
+        balances[payerId] += amountPerPerson;
+      }
+    });
+  });
+
+  settlements.forEach((settlement) => {
+    const fromId = settlement.from.toString();
+    const toId = settlement.to.toString();
+
+    if (balances[fromId] === undefined || balances[toId] === undefined) return;
+
+    balances[fromId] += settlement.amount;
+    balances[toId] -= settlement.amount;
+  });
+
+  return { group, balances: simplifyDebts(balances, group.members) };
+};
 
 
 // CREAR GASTO: valida campos, guarda el gasto, actualiza el grupo y notifica por email.
@@ -144,39 +188,84 @@ exports.calculateBalances = async (req, res, next) => {
   try {
     const { groupId } = req.params;
 
-    const group = await Group.findById(groupId).populate("members", "name email");
+    const snapshot = await getGroupBalanceSnapshot(groupId);
+    if (!snapshot.group) {
+      return respondError(res, 404, "Grupo no encontrado");
+    }
+
+    if (!isGroupMember(snapshot.group, req.userId)) {
+      return respondError(res, 403, "No puedes ver los balances de este grupo");
+    }
+
+    return res.json({ ok: true, balances: snapshot.balances });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+// LIQUIDAR DEUDA: registra un pago entre dos miembros para que deje de aparecer como pendiente.
+exports.settleDebt = async (req, res, next) => {
+  try {
+    const { groupId } = req.params;
+    const { fromUserId, toUserId, amount } = req.body;
+    const amountValue = Number(amount);
+
+    if (!groupId || !fromUserId || !toUserId) {
+      return respondError(res, 400, "Faltan datos para liquidar la deuda");
+    }
+
+    if (!amountValue || amountValue <= 0) {
+      return respondError(res, 400, "El importe debe ser mayor que cero");
+    }
+
+    const group = await Group.findById(groupId)
+      .populate("members", "_id name email")
+      .populate("createdBy", "_id");
+
     if (!group) {
       return respondError(res, 404, "Grupo no encontrado");
     }
 
     if (!isGroupMember(group, req.userId)) {
-      return respondError(res, 403, "No puedes ver los balances de este grupo");
+      return respondError(res, 403, "No puedes liquidar deudas de este grupo");
     }
 
-    const expenses = await Expense.find({ group: groupId });
+    const isCreator = group.createdBy && group.createdBy._id.toString() === req.userId;
+    if (toUserId !== req.userId && !isCreator) {
+      return respondError(res, 403, "Solo el acreedor o el administrador pueden liquidar esta deuda");
+    }
 
-    const balances = {};
+    const snapshot = await getGroupBalanceSnapshot(groupId);
+    if (!snapshot.group) {
+      return respondError(res, 404, "Grupo no encontrado");
+    }
 
-    group.members.forEach((member) => {
-      balances[member._id] = 0;
+    const existingDebt = snapshot.balances.find(
+      (balance) =>
+        balance.from &&
+        balance.to &&
+        balance.from._id.toString() === fromUserId &&
+        balance.to._id.toString() === toUserId
+    );
+
+    if (!existingDebt) {
+      return respondError(res, 404, "La deuda seleccionada ya no existe");
+    }
+
+    if (amountValue > existingDebt.amount + 0.01) {
+      return respondError(res, 400, "El importe supera la deuda pendiente");
+    }
+
+    await Settlement.create({
+      group: groupId,
+      from: fromUserId,
+      to: toUserId,
+      amount: amountValue,
+      settledBy: req.userId
     });
 
-    expenses.forEach((exp) => {
-      if (!Array.isArray(exp.participants) || exp.participants.length === 0) return;
-
-      const amountPerPerson = exp.amount / exp.participants.length;
-
-      exp.participants.forEach((p) => {
-        if (p.toString() !== exp.paidBy.toString()) {
-          balances[p] -= amountPerPerson;
-          balances[exp.paidBy] += amountPerPerson;
-        }
-      });
-    });
-
-    const simplified = simplifyDebts(balances, group.members);
-
-    return res.json({ ok: true, balances: simplified });
+    return res.json({ ok: true, message: "Deuda liquidada correctamente" });
   } catch (error) {
     next(error);
   }
@@ -220,3 +309,4 @@ exports.deleteExpense = async (req, res, next) => {
     next(error);
   }
 };
+

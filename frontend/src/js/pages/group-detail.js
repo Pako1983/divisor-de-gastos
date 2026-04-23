@@ -341,11 +341,54 @@ async function loadBalances() {
       const div = document.createElement("div");
       div.className = "balance-card";
 
+      const creditorId = String(b.to?._id ?? b.to?.id ?? "");
+      const debtorId = String(b.from?._id ?? b.from?.id ?? "");
+      const canSettle = creditorId !== "" && creditorId === userId;
+      const settleButton = canSettle
+        ? `<button class="btn btn-secondary settle-debt-btn" data-debtor="${debtorId}" data-creditor="${creditorId}" data-amount="${b.amount}">
+            Liquidar
+          </button>`
+        : "";
+
       div.innerHTML = `
         <strong>${b.from.name}</strong> debe 
         <strong>${b.amount.toFixed(2)}€</strong> a 
         <strong>${b.to.name}</strong>
+        ${settleButton}
       `;
+
+      if (canSettle) {
+        const settleBtn = div.querySelector(".settle-debt-btn");
+        settleBtn.addEventListener("click", () => {
+          showConfirmModal(
+            "Liquidar deuda",
+            `¿Marcar como pagada la deuda de ${b.from.name} por ${b.amount.toFixed(2)}€?`,
+            async () => {
+              const res = await fetch(`${API_URL}/expenses/${groupId}/settle`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: "Bearer " + token
+                },
+                body: JSON.stringify({
+                  fromUserId: debtorId,
+                  toUserId: creditorId,
+                  amount: b.amount
+                })
+              });
+
+              const data = await res.json();
+
+              if (data.ok) {
+                showModal("Éxito", "La deuda ha sido liquidada correctamente.", "success");
+                loadBalances();
+              } else {
+                showModal("Error", data.message || "No se pudo liquidar la deuda.", "error");
+              }
+            }
+          );
+        });
+      }
 
       balancesContainer.appendChild(div);
     });
@@ -424,8 +467,6 @@ document.getElementById("logoutBtn").onclick = () => showLogoutModal();
 loadGroup();
 loadExpenses();
 loadBalances();
-
-
 
 
 

@@ -5,6 +5,7 @@ const {
   createExpense,
   getGroupExpenses,
   calculateBalances,
+  settleDebt,
   deleteExpense
 } = require("../controllers/expense.controller");
 
@@ -52,6 +53,13 @@ router.get(
   "/:groupId/balances",
   auth,
   calculateBalances
+);
+
+// Liquidar una deuda entre dos miembros del grupo
+router.post(
+  "/:groupId/settle",
+  auth,
+  settleDebt
 );
 
 // Eliminar gasto
