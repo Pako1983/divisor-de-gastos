@@ -6,7 +6,7 @@ const simplifyDebts = require("../utils/debt-simplifier");
 const { sendEmail } = require("../utils/email.service");
 const { newExpenseTemplate, debtSettledTemplate, debtCollectedTemplate } = require("../utils/emailTemplates");
 const { FRONTEND_URL, buildFrontendRedirectUrl } = require("../config/app.config");
-
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 // Responde los errores de forma uniforme con el mismo esquema JSON.
 const respondError = (res, status, message) =>
   res.status(status).json({ ok: false, message });
@@ -276,43 +276,47 @@ exports.settleDebt = async (req, res, next) => {
         groupId
       });
       const logoUrl = `${FRONTEND_URL}/src/assets/logo.png`;
+      const amountText = amountValue.toFixed(2);
 
       try {
         const debtorNotice = debtSettledTemplate(
           debtorUser.name,
           creditorUser.name,
           group.name,
-          amountValue.toFixed(2),
+          amountText,
           groupUrl,
           logoUrl
         );
 
-        await sendEmail(
+        const debtorResult = await sendEmail(
           debtorUser.email,
           "Tu deuda ha sido liquidada - Divisor de Gastos",
           debtorNotice.html,
           debtorNotice.text
         );
+        console.log("Aviso de liquidación enviado al deudor:", debtorResult);
       } catch (emailError) {
         console.error("Error enviando aviso al deudor:", emailError);
       }
 
       try {
+        await delay(1200);
         const creditorNotice = debtCollectedTemplate(
           creditorUser.name,
           debtorUser.name,
           group.name,
-          amountValue.toFixed(2),
+          amountText,
           groupUrl,
           logoUrl
         );
 
-        await sendEmail(
+        const creditorResult = await sendEmail(
           creditorUser.email,
           "Has recibido el pago de una deuda - Divisor de Gastos",
           creditorNotice.html,
           creditorNotice.text
         );
+        console.log("Aviso de cobro enviado al acreedor:", creditorResult);
       } catch (emailError) {
         console.error("Error enviando aviso al acreedor:", emailError);
       }
@@ -362,4 +366,5 @@ exports.deleteExpense = async (req, res, next) => {
     next(error);
   }
 };
+
 
