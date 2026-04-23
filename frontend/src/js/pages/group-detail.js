@@ -15,6 +15,9 @@ try {
   window.location.href = "login.html";
 }
 
+const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+const currentUserId = String(userId || storedUser?.id || storedUser?._id || "");
+
 const urlParams = new URLSearchParams(window.location.search);
 const urlGroupId = urlParams.get("groupId");
 if (urlGroupId) {
@@ -343,7 +346,7 @@ async function loadBalances() {
 
       const creditorId = String(b.to?._id ?? b.to?.id ?? "");
       const debtorId = String(b.from?._id ?? b.from?.id ?? "");
-      const canSettle = creditorId !== "" && creditorId === userId;
+      const canSettle = creditorId !== "" && creditorId === currentUserId;
       const settleButton = canSettle
         ? `<button class="btn btn-secondary settle-debt-btn" data-debtor="${debtorId}" data-creditor="${creditorId}" data-amount="${b.amount}">
             Liquidar
@@ -467,7 +470,6 @@ document.getElementById("logoutBtn").onclick = () => showLogoutModal();
 loadGroup();
 loadExpenses();
 loadBalances();
-
 
 
 
