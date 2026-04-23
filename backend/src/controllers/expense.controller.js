@@ -4,7 +4,7 @@ const User = require("../models/user.model");
 const Settlement = require("../models/settlement.model");
 const simplifyDebts = require("../utils/debt-simplifier");
 const { sendEmail } = require("../utils/email.service");
-const { newExpenseTemplate, debtSettledTemplate } = require("../utils/emailTemplates");
+const { newExpenseTemplate, debtSettledTemplate, debtCollectedTemplate } = require("../utils/emailTemplates");
 const { FRONTEND_URL, buildFrontendRedirectUrl } = require("../config/app.config");
 
 // Responde los errores de forma uniforme con el mismo esquema JSON.
@@ -271,28 +271,50 @@ exports.settleDebt = async (req, res, next) => {
     const debtorUser = debtor || null;
 
     if (creditorUser && debtorUser) {
+      const groupUrl = buildFrontendRedirectUrl({
+        redirect: "group-detail",
+        groupId
+      });
+      const logoUrl = `${FRONTEND_URL}/src/assets/logo.png`;
+
       try {
-        const groupUrl = buildFrontendRedirectUrl({
-          redirect: "group-detail",
-          groupId
-        });
-        const { html, text } = debtSettledTemplate(
+        const debtorNotice = debtSettledTemplate(
           debtorUser.name,
           creditorUser.name,
           group.name,
           amountValue.toFixed(2),
           groupUrl,
-          `${FRONTEND_URL}/src/assets/logo.png`
+          logoUrl
         );
 
         await sendEmail(
           debtorUser.email,
           "Tu deuda ha sido liquidada - Divisor de Gastos",
-          html,
-          text
+          debtorNotice.html,
+          debtorNotice.text
         );
       } catch (emailError) {
-        console.error("Error enviando aviso de deuda liquidada:", emailError);
+        console.error("Error enviando aviso al deudor:", emailError);
+      }
+
+      try {
+        const creditorNotice = debtCollectedTemplate(
+          creditorUser.name,
+          debtorUser.name,
+          group.name,
+          amountValue.toFixed(2),
+          groupUrl,
+          logoUrl
+        );
+
+        await sendEmail(
+          creditorUser.email,
+          "Has recibido el pago de una deuda - Divisor de Gastos",
+          creditorNotice.html,
+          creditorNotice.text
+        );
+      } catch (emailError) {
+        console.error("Error enviando aviso al acreedor:", emailError);
       }
     }
 

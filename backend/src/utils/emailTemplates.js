@@ -304,3 +304,67 @@ Divisor de Gastos © 2026
 
   return { html: htmlVersion, text: textVersion };
 };
+
+//  PLANTILLA: Aviso de deuda cobrada
+exports.debtCollectedTemplate = (
+  creditorName,
+  debtorName,
+  groupName,
+  amount,
+  groupUrl,
+  logoUrl
+) => {
+  const textVersion = `
+Hola ${creditorName},
+
+${debtorName} ha confirmado el pago de una deuda de €${amount} en el grupo "${groupName}".
+
+Puedes revisar el grupo aquí:
+${groupUrl}
+
+Divisor de Gastos © 2026
+  `;
+
+  const htmlVersion = `
+  <div style="background:#0d0d0d; padding:20px; color:white;
+              font-family:Arial; border-radius:12px;
+              max-width:600px; margin:auto;">
+
+    <div style="text-align:center; margin-bottom:20px;">
+      <img src="${logoUrl}" alt="Logo"
+           style="width:80px; border-radius:10px;" />
+    </div>
+
+    <h2 style="color:#4CAF50; text-align:center;">
+      Deuda cobrada
+    </h2>
+
+    <p>Hola <strong>${creditorName}</strong>,</p>
+
+    <p>
+      <strong>${debtorName}</strong> ha confirmado el pago de una deuda de
+      <strong>€${amount}</strong> en el grupo <strong>${groupName}</strong>.
+    </p>
+
+    <p>
+      Ya puedes entrar al grupo para ver el estado actualizado.
+    </p>
+
+    <div style="text-align:center; margin-top:25px;">
+      <a href="${groupUrl}"
+         style="background:#4CAF50; padding:12px 20px;
+                color:white; text-decoration:none;
+                border-radius:8px; font-weight:bold;">
+        Ver grupo
+      </a>
+    </div>
+
+    <br>
+    <p style="font-size:12px; opacity:0.7; text-align:center;">
+      Divisor de Gastos © 2026
+    </p>
+  </div>
+  `;
+
+  return { html: htmlVersion, text: textVersion };
+};
