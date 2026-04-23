@@ -242,22 +242,22 @@ Divisor de Gastos Â© 2026
 
 //  PLANTILLA: Aviso de deuda liquidada
 exports.debtSettledTemplate = (
+  recipientName,
   creditorName,
-  debtorName,
   groupName,
   amount,
   groupUrl,
   logoUrl
 ) => {
   const textVersion = `
-Hola ${creditorName},
+Hola ${recipientName},
 
-${debtorName} ha marcado como pagada la deuda de â‚¬${amount} en el grupo "${groupName}".
+Tu deuda de €${amount} en el grupo "${groupName}" ha sido marcada como pagada por ${creditorName}.
 
-Puedes revisar el grupo aquÃ­:
+Puedes revisar el grupo aquí:
 ${groupUrl}
 
-Divisor de Gastos Â© 2026
+Divisor de Gastos © 2026
   `;
 
   const htmlVersion = `
@@ -274,11 +274,12 @@ Divisor de Gastos Â© 2026
       Deuda liquidada
     </h2>
 
-    <p>Hola <strong>${creditorName}</strong>,</p>
+    <p>Hola <strong>${recipientName}</strong>,</p>
 
     <p>
-      <strong>${debtorName}</strong> ha marcado como pagada la deuda de
-      <strong>â‚¬${amount}</strong> en el grupo <strong>${groupName}</strong>.
+      Tu deuda de <strong>€${amount}</strong> en el grupo
+      <strong>${groupName}</strong> ha sido marcada como pagada por
+      <strong>${creditorName}</strong>.
     </p>
 
     <p>
@@ -296,12 +297,10 @@ Divisor de Gastos Â© 2026
 
     <br>
     <p style="font-size:12px; opacity:0.7; text-align:center;">
-      Divisor de Gastos Â© 2026
+      Divisor de Gastos © 2026
     </p>
   </div>
   `;
 
   return { html: htmlVersion, text: textVersion };
 };
-
-

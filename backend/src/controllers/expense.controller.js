@@ -277,8 +277,8 @@ exports.settleDebt = async (req, res, next) => {
           groupId
         });
         const { html, text } = debtSettledTemplate(
-          creditorUser.name,
           debtorUser.name,
+          creditorUser.name,
           group.name,
           amountValue.toFixed(2),
           groupUrl,
@@ -286,8 +286,8 @@ exports.settleDebt = async (req, res, next) => {
         );
 
         await sendEmail(
-          creditorUser.email,
-          "Deuda liquidada - Divisor de Gastos",
+          debtorUser.email,
+          "Tu deuda ha sido liquidada - Divisor de Gastos",
           html,
           text
         );
