@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  crearGasto,
-  obtenerGastosGrupo,
-  calcularBalances,
-  eliminarGasto
+  createExpense,
+  getGroupExpenses,
+  calculateBalances,
+  deleteExpense
 } = require("../controllers/expense.controller");
 
 const auth = require("../middlewares/auth.middleware");
@@ -37,25 +37,25 @@ router.post(
   "/create",
   auth,
   upload.single("receipt"),
-  crearGasto
+  createExpense
 );
 
 // Obtener gastos del grupo
 router.get(
   "/:groupId",
   auth,
-  obtenerGastosGrupo
+  getGroupExpenses
 );
 
 // Obtener balances simplificados
 router.get(
   "/:groupId/balances",
   auth,
-  calcularBalances
+  calculateBalances
 );
 
 // Eliminar gasto
-router.delete("/:expenseId", auth, eliminarGasto);
+router.delete("/:expenseId", auth, deleteExpense);
 
 module.exports = router;
 
