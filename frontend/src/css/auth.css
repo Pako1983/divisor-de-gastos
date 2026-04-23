@@ -52,6 +52,14 @@
   border-radius: var(--radius);
 }
 
+body.auth-page {
+  padding-bottom: 0;
+}
+
+body.auth-page .bottom-nav {
+  display: none !important;
+}
+
 /* ============================================
    ENLACES
    ============================================ */
