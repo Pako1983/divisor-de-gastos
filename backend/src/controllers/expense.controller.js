@@ -4,7 +4,7 @@ const User = require("../models/user.model");
 const Settlement = require("../models/settlement.model");
 const simplifyDebts = require("../utils/debt-simplifier");
 const { sendEmail } = require("../utils/email.service");
-const { newExpenseTemplate } = require("../utils/emailTemplates");
+const { newExpenseTemplate, debtSettledTemplate } = require("../utils/emailTemplates");
 const { FRONTEND_URL, buildFrontendRedirectUrl } = require("../config/app.config");
 
 // Responde los errores de forma uniforme con el mismo esquema JSON.
@@ -264,6 +264,37 @@ exports.settleDebt = async (req, res, next) => {
       amount: amountValue,
       settledBy: req.userId
     });
+
+    const debtor = group.members.find((member) => member._id.toString() === fromUserId);
+    const creditor = group.members.find((member) => member._id.toString() === toUserId);
+    const creditorUser = creditor || null;
+    const debtorUser = debtor || null;
+
+    if (creditorUser && debtorUser) {
+      try {
+        const groupUrl = buildFrontendRedirectUrl({
+          redirect: "group-detail",
+          groupId
+        });
+        const { html, text } = debtSettledTemplate(
+          creditorUser.name,
+          debtorUser.name,
+          group.name,
+          amountValue.toFixed(2),
+          groupUrl,
+          `${FRONTEND_URL}/src/assets/logo.png`
+        );
+
+        await sendEmail(
+          creditorUser.email,
+          "Deuda liquidada - Divisor de Gastos",
+          html,
+          text
+        );
+      } catch (emailError) {
+        console.error("Error enviando aviso de deuda liquidada:", emailError);
+      }
+    }
 
     return res.json({ ok: true, message: "Deuda liquidada correctamente" });
   } catch (error) {
