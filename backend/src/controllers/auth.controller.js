@@ -34,14 +34,16 @@ exports.register = async (req, res, next) => {
 
     // Enviamos un email de bienvenida sin bloquear el registro si falla.
     try {
+      console.log("Intentando enviar correo de bienvenida a:", newUser.email);
       const logoUrl = `${FRONTEND_URL}/src/assets/logo.png`;
       const { html, text } = welcomeRegisterTemplate(newUser.name, logoUrl);
       await sendEmail(
         newUser.email,
-        "Bienvenido a Divisor de Gastos",
+        "Confirmación de registro y bienvenida - Divisor de Gastos",
         html,
         text
       );
+      console.log("Correo de bienvenida procesado para:", newUser.email);
     } catch (emailError) {
       console.error("Error enviando correo de bienvenida:", emailError);
     }
