@@ -21,7 +21,7 @@
   background: #1b222c;
   padding: 22px;
   border-radius: 12px;
-  width: 320px;
+  width: min(92vw, 420px);
   text-align: center;
   border: 1px solid var(--border);
   box-shadow: 0 10px 25px rgba(0,0,0,0.45);
@@ -47,6 +47,24 @@
 
 .modal-buttons .btn {
   flex: 1;
+}
+
+.modal-input {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #111720;
+  color: var(--text);
+  font-size: 15px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.modal-input:focus {
+  border-color: #4aa3ff;
+  box-shadow: 0 0 0 2px rgba(74, 163, 255, 0.18);
 }
 
 /* ============================================

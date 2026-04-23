@@ -1,4 +1,4 @@
-import { showModal } from "../components/modal.js";
+import { showModal, showInputModal } from "../components/modal.js";
 import { API_URL } from "../config.js";
 // Ruta guardada por otros flujos para redireccionar despues del login.
 const pendingRedirect = JSON.parse(localStorage.getItem("pendingRedirect") || "null");
@@ -53,19 +53,18 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
 document.getElementById("forgotPassword").addEventListener("click", (e) => {
   e.preventDefault();
 
-  const email = window.prompt("Introduce tu correo electrónico para recuperar la contraseña");
+  showInputModal(
+    "Recuperar contraseña",
+    "Introduce tu correo electrónico",
+    async (email) => {
+      const res = await fetch(`${API_URL}/auth/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() })
+      });
 
-  if (!email) {
-    return;
-  }
+      const data = await res.json().catch(() => null);
 
-  fetch(`${API_URL}/auth/forgot-password`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: email.trim() })
-  })
-    .then((res) => res.json().catch(() => null).then((data) => ({ res, data })))
-    .then(({ res, data }) => {
       if (!res.ok || !data?.ok) {
         throw new Error(data?.message || "No se pudo enviar el correo");
       }
@@ -74,8 +73,6 @@ document.getElementById("forgotPassword").addEventListener("click", (e) => {
         "Revisa tu correo",
         "Si el correo existe, recibirás un enlace para restablecer tu contraseña."
       );
-    })
-    .catch(() => {
-      showModal("Error", "No se pudo enviar el correo de recuperación", "error");
-    });
+    }
+  );
 });
