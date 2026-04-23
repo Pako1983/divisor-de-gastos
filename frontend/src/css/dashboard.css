@@ -98,6 +98,41 @@
   margin-top: 25px;
 }
 
+.dashboard-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.dashboard-action-btn {
+  flex: 1;
+  min-width: 180px;
+  padding: 12px 18px;
+  font-size: 15px;
+  border-radius: 10px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.dashboard-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.24);
+}
+
+.dashboard-action-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.16);
+}
+
+.dashboard-actions .btn-secondary {
+  background: #2c313a;
+}
+
+.dashboard-actions .btn-danger {
+  filter: saturate(1.05);
+}
+
 /* ============================================
     Ajustes para móviles
    ============================================ */
@@ -144,6 +179,15 @@
     font-size: 1rem;
   }
 
+  .dashboard-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dashboard-action-btn {
+    min-width: 100%;
+  }
+
   .logout-btn {
     margin-bottom: 20px;
   }
@@ -169,6 +213,14 @@
     width: 80%;
     margin: 10px auto;
     display: block;
+  }
+
+  .dashboard-actions {
+    justify-content: center;
+  }
+
+  .dashboard-action-btn {
+    max-width: 320px;
   }
 }
 
