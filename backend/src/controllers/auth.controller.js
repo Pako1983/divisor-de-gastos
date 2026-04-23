@@ -12,6 +12,8 @@ const { FRONTEND_URL } = require("../config/app.config");
 const generateResetToken = () => crypto.randomBytes(32).toString("hex");
 const hashToken = (token) =>
   crypto.createHash("sha256").update(token).digest("hex");
+const fileToAvatarDataUrl = (file) =>
+  file ? `data:${file.mimetype};base64,${file.buffer.toString("base64")}` : null;
 
 // Registrar usuario
 exports.register = async (req, res, next) => {
@@ -31,7 +33,7 @@ exports.register = async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Avatar opcional (compatible con producción)
-    const avatar = req.file ? `/uploads/avatars/${req.file.filename}` : null;
+    const avatar = fileToAvatarDataUrl(req.file);
 
     const newUser = await User.create({
       name,
@@ -220,3 +222,4 @@ exports.resetPassword = async (req, res, next) => {
     next(error);
   }
 };
+

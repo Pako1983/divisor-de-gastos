@@ -21,9 +21,13 @@ const DEFAULT_AVATAR =
 
 const avatarImg = document.getElementById("avatar");
 const setAvatarSrc = (avatarPath) => {
-  const normalizedPath = avatarPath
-    ? `${FILES_URL}${avatarPath.startsWith("/") ? avatarPath : `/${avatarPath}`}`
-    : DEFAULT_AVATAR;
+  const normalizedPath = !avatarPath
+    ? DEFAULT_AVATAR
+    : avatarPath.startsWith("data:")
+      ? avatarPath
+      : avatarPath.startsWith("http")
+        ? avatarPath
+        : `${FILES_URL}${avatarPath.startsWith("/") ? avatarPath : `/${avatarPath}`}`;
 
   avatarImg.onerror = () => {
     avatarImg.onerror = null;

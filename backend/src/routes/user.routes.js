@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const path = require("path");
-
 const auth = require("../middlewares/auth.middleware");
 
 const {
@@ -15,16 +13,7 @@ const {
 
 
 //  CONFIGURACIÓN DE MULTER
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../uploads/avatars"));
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
-
-const upload = multer({ storage });
+const upload = multer({ storage: multer.memoryStorage() });
 
 
 //  RUTAS PROTEGIDAS

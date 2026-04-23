@@ -1,6 +1,9 @@
 const User = require("../models/user.model");
 const Group = require("../models/group.model");
 const bcrypt = require("bcryptjs");
+const fileToAvatarDataUrl = (file) =>
+  file ? `data:${file.mimetype};base64,${file.buffer.toString("base64")}` : null;
+
 
 // Obtener perfil del usuario
 exports.getProfile = async (req, res, next) => {
@@ -68,7 +71,7 @@ exports.updatePassword = async (req, res, next) => {
 // Actualizar avatar
 exports.updateAvatar = async (req, res, next) => {
   try {
-    const avatar = req.file ? `/uploads/avatars/${req.file.filename}` : null;
+    const avatar = fileToAvatarDataUrl(req.file);
 
     const user = await User.findByIdAndUpdate(
       req.userId,
@@ -101,4 +104,6 @@ exports.getUserGroups = async (req, res, next) => {
     next(error);
   }
 };
+
+
 
