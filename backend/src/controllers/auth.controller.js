@@ -154,6 +154,7 @@ exports.forgotPassword = async (req, res, next) => {
     const logoUrl = `${FRONTEND_URL}/src/assets/logo.png`;
     const { html, text } = passwordResetTemplate(user.name, resetUrl, logoUrl);
 
+    console.log("Intentando enviar correo de recuperacion a:", user.email);
     const emailResult = await sendEmail(
       user.email,
       "Restablecer contraseña - Divisor de Gastos",
@@ -165,6 +166,10 @@ exports.forgotPassword = async (req, res, next) => {
       console.log("Correo de recuperación enviado a:", user.email);
     } else {
       console.warn("No se pudo enviar el correo de recuperación a:", user.email);
+      return res.status(500).json({
+        ok: false,
+        message: "No se pudo enviar el correo de recuperación. Revisa la configuración de Brevo."
+      });
     }
 
     return res.json({
