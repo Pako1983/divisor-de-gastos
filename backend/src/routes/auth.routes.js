@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const path = require("path");
 
-const { register, login, forgotPassword } = require("../controllers/auth.controller");
+const { register, login, forgotPassword, resetPassword } = require("../controllers/auth.controller");
 
 
 //  CONFIGURACIÓN DE MULTER
@@ -23,6 +23,7 @@ const upload = multer({ storage });
 router.post("/register", upload.single("avatar"), register);
 router.post("/login", login);
 router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
 
 module.exports = router;
 

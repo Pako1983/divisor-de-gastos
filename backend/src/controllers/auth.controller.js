@@ -1,9 +1,17 @@
+const crypto = require("crypto");
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { sendEmail } = require("../utils/email.service");
-const { welcomeRegisterTemplate } = require("../utils/emailTemplates");
+const {
+  welcomeRegisterTemplate,
+  passwordResetTemplate
+} = require("../utils/emailTemplates");
 const { FRONTEND_URL } = require("../config/app.config");
+
+const generateResetToken = () => crypto.randomBytes(32).toString("hex");
+const hashToken = (token) =>
+  crypto.createHash("sha256").update(token).digest("hex");
 
 // Registrar usuario
 exports.register = async (req, res, next) => {
@@ -113,26 +121,97 @@ exports.login = async (req, res, next) => {
   }
 };
 
-// Recuperar contraseña (placeholder)
+// Solicitar recuperación de contraseña
 exports.forgotPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
 
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({
+    if (!email) {
+      return res.status(400).json({
         ok: false,
-        message: "No existe un usuario con ese email"
+        message: "Debes indicar un correo electrónico"
       });
     }
 
-    // Envio real de email para recuperación de contraseña
+    const user = await User.findOne({ email });
+
+    // Evitamos revelar si el correo existe o no.
+    if (!user) {
+      return res.json({
+        ok: true,
+        message: "Si el correo existe, recibirás un enlace para restablecer tu contraseña"
+      });
+    }
+
+    const rawToken = generateResetToken();
+    const tokenHash = hashToken(rawToken);
+
+    user.resetPasswordToken = tokenHash;
+    user.resetPasswordExpires = Date.now() + 60 * 60 * 1000; // 1 hora
+    await user.save();
+
+    const resetUrl = `${FRONTEND_URL}/reset-password.html?token=${rawToken}`;
+    const logoUrl = `${FRONTEND_URL}/src/assets/logo.png`;
+    const { html, text } = passwordResetTemplate(user.name, resetUrl, logoUrl);
+
+    const emailResult = await sendEmail(
+      user.email,
+      "Restablecer contraseña - Divisor de Gastos",
+      html,
+      text
+    );
+
+    if (emailResult && emailResult.ok) {
+      console.log("Correo de recuperación enviado a:", user.email);
+    } else {
+      console.warn("No se pudo enviar el correo de recuperación a:", user.email);
+    }
+
     return res.json({
       ok: true,
-      message: "Se ha enviado un correo para recuperar la contraseña"
+      message: "Si el correo existe, recibirás un enlace para restablecer tu contraseña"
     });
   } catch (error) {
     next(error);
   }
 };
 
+// Restablecer contraseña con token
+exports.resetPassword = async (req, res, next) => {
+  try {
+    const { token, password } = req.body;
+
+    if (!token || !password) {
+      return res.status(400).json({
+        ok: false,
+        message: "Faltan datos para restablecer la contraseña"
+      });
+    }
+
+    const tokenHash = hashToken(token);
+
+    const user = await User.findOne({
+      resetPasswordToken: tokenHash,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        ok: false,
+        message: "El enlace de recuperación no es válido o ha caducado"
+      });
+    }
+
+    user.password = await bcrypt.hash(password, 10);
+    user.resetPasswordToken = null;
+    user.resetPasswordExpires = null;
+    await user.save();
+
+    return res.json({
+      ok: true,
+      message: "La contraseña se ha actualizado correctamente"
+    });
+  } catch (error) {
+    next(error);
+  }
+};

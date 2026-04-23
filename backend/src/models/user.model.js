@@ -28,6 +28,16 @@ const UserSchema = new mongoose.Schema(
       type: String, // ruta del archivo subido
       default: null
     },
+    // Token temporal para recuperar la contrasena.
+    resetPasswordToken: {
+      type: String,
+      default: null
+    },
+    // Fecha de expiracion del token de recuperacion.
+    resetPasswordExpires: {
+      type: Date,
+      default: null
+    },
     // Referencias a los grupos en los que participa el usuario.
     groups: [
       {

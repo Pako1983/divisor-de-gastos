@@ -177,4 +177,67 @@ Divisor de Gastos © 2026
   return { html: htmlVersion, text: textVersion };
 };
 
+//  PLANTILLA: Recuperacion de contrasena
+exports.passwordResetTemplate = (userName, resetUrl, logoUrl) => {
+  const textVersion = `
+Hola ${userName},
+
+Hemos recibido una solicitud para restablecer tu contrasena en Divisor de Gastos.
+Si has sido tu, entra en el siguiente enlace para elegir una nueva contrasena:
+
+${resetUrl}
+
+Si no has solicitado este cambio, puedes ignorar este mensaje.
+
+Divisor de Gastos © 2026
+  `;
+
+  const htmlVersion = `
+  <div style="background:#0d0d0d; padding:20px; color:white;
+              font-family:Arial; border-radius:12px;
+              max-width:600px; margin:auto;">
+
+    <div style="text-align:center; margin-bottom:20px;">
+      <img src="${logoUrl}" alt="Logo"
+           style="width:80px; border-radius:10px;" />
+    </div>
+
+    <h2 style="color:#4CAF50; text-align:center;">
+      Restablecer contrasena
+    </h2>
+
+    <p>Hola <strong>${userName}</strong>,</p>
+
+    <p>
+      Hemos recibido una solicitud para restablecer tu contrasena en
+      <strong>Divisor de Gastos</strong>.
+    </p>
+
+    <p>
+      Haz clic en el siguiente boton para elegir una nueva contrasena.
+    </p>
+
+    <div style="text-align:center; margin-top:25px;">
+      <a href="${resetUrl}"
+         style="background:#4CAF50; padding:12px 20px;
+                color:white; text-decoration:none;
+                border-radius:8px; font-weight:bold;">
+        Restablecer contrasena
+      </a>
+    </div>
+
+    <p style="word-break:break-all; font-size:12px; opacity:0.8; margin-top:20px;">
+      ${resetUrl}
+    </p>
+
+    <br>
+    <p style="font-size:12px; opacity:0.7; text-align:center;">
+      Divisor de Gastos © 2026
+    </p>
+  </div>
+  `;
+
+  return { html: htmlVersion, text: textVersion };
+};
+
 

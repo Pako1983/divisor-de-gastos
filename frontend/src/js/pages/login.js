@@ -48,3 +48,34 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     showModal("Error", "No se pudo conectar con el servidor", "error");
   }
 });
+
+// Solicita la recuperacion de contraseña desde el enlace del login.
+document.getElementById("forgotPassword").addEventListener("click", (e) => {
+  e.preventDefault();
+
+  const email = window.prompt("Introduce tu correo electrónico para recuperar la contraseña");
+
+  if (!email) {
+    return;
+  }
+
+  fetch(`${API_URL}/auth/forgot-password`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: email.trim() })
+  })
+    .then((res) => res.json().catch(() => null).then((data) => ({ res, data })))
+    .then(({ res, data }) => {
+      if (!res.ok || !data?.ok) {
+        throw new Error(data?.message || "No se pudo enviar el correo");
+      }
+
+      showModal(
+        "Revisa tu correo",
+        "Si el correo existe, recibirás un enlace para restablecer tu contraseña."
+      );
+    })
+    .catch(() => {
+      showModal("Error", "No se pudo enviar el correo de recuperación", "error");
+    });
+});
