@@ -368,10 +368,11 @@ function openReceiptModal(receiptPath) {
   const url = `${FILES_URL}${receiptPath}`;
 
   if (isImage) {
-    viewer.innerHTML = `<img src="${url}" alt="Recibo" class="receipt-image" />`;
+    window.open(url, "_blank", "noopener,noreferrer");
+    return;
   } else {
     const downloadLabel = showDownloadLink ? "Ver o descargar archivo" : "Descargar archivo";
-    viewer.innerHTML = `<div class="receipt-link-wrapper"><a href="${url}" target="_blank" rel="noopener" class="receipt-link" download>${downloadLabel}</a></div>`;
+    viewer.innerHTML = `<div class="receipt-link-wrapper"><a href="${url}" target="_blank" rel="noopener" class="receipt-link">${downloadLabel}</a></div>`;
   }
 
   modal.classList.remove("hidden");
@@ -424,7 +425,6 @@ document.getElementById("logoutBtn").onclick = () => showLogoutModal();
 loadGroup();
 loadExpenses();
 loadBalances();
-
 
 
 
