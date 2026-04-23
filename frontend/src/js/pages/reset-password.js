@@ -42,7 +42,7 @@ document.getElementById("resetPasswordForm").addEventListener("submit", async (e
     showModal("Contraseña actualizada", data.message || "La contraseña se ha cambiado correctamente");
 
     setTimeout(() => {
-      window.location.href = "login.html";
+      window.location.href = "src/templates/login.html";
     }, 1500);
   } catch (error) {
     showModal("Error", "No se pudo conectar con el servidor", "error");
