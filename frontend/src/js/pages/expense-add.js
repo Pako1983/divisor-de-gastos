@@ -1,7 +1,6 @@
 import { showModal, showLogoutModal } from "../components/modal.js";
 import { API_URL } from "../config.js";
 
-
 //  VALIDACIÓN DE SESIÓN
 // Verifica la sesión existente; sin token redirige al login.
 const token = localStorage.getItem("token");
@@ -11,16 +10,13 @@ if (!token) window.location.href = "login.html";
 const groupId = localStorage.getItem("currentGroup");
 if (!groupId) window.location.href = "profile.html";
 
-
 //  ELEMENTOS DEL DOM
-// Referencias a elementos del DOM utilizados para el formulario y el autocompletado.
-const searchInput = document.getElementById("searchMember");
-const autocomplete = document.getElementById("autocomplete");
-const chipsContainer = document.getElementById("chips");
+const paidBySelect = document.getElementById("paidBy");
+const participantsList = document.getElementById("participantsList");
+const selectAllParticipants = document.getElementById("selectAllParticipants");
 
 let members = [];
-let selectedParticipants = [];
-
+let selectedParticipantIds = new Set();
 
 //  CARGAR MIEMBROS DEL GRUPO
 // Carga los miembros del grupo y rellena el selector de pagadores disponibles.
@@ -38,44 +34,97 @@ async function loadMembers() {
     const data = await res.json();
     if (!data.ok) return showModal("Error", data.message, "error");
 
-    members = data.group.members;
-
-    // Llenar select de pagador
-    const paidBySelect = document.getElementById("paidBy");
-    members.forEach(m => {
-      const option = document.createElement("option");
-      option.value = m._id;
-      option.textContent = m.name;
-      paidBySelect.appendChild(option);
-    });
-
+    members = data.group.members || [];
+    renderPaidByOptions();
+    renderParticipantsChecklist();
   } catch (err) {
     showModal("Error", "No se pudieron cargar los usuarios.", "error");
   }
 }
 
+function renderPaidByOptions() {
+  paidBySelect.innerHTML = "";
+
+  members.forEach((member) => {
+    const option = document.createElement("option");
+    option.value = member._id;
+    option.textContent = member.name;
+    paidBySelect.appendChild(option);
+  });
+}
+
+function renderParticipantsChecklist() {
+  participantsList.innerHTML = "";
+  selectedParticipantIds = new Set();
+  selectAllParticipants.checked = false;
+
+  members.forEach((member) => {
+    const row = document.createElement("label");
+    row.className = "participant-check";
+    row.innerHTML = `
+      <input type="checkbox" class="participant-checkbox" value="${member._id}">
+      <span class="participant-info">
+        <strong>${member.name}</strong>
+        <small>${member.email}</small>
+      </span>
+    `;
+
+    const checkbox = row.querySelector("input");
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked) {
+        selectedParticipantIds.add(member._id);
+      } else {
+        selectedParticipantIds.delete(member._id);
+      }
+
+      syncSelectAllState();
+    });
+
+    participantsList.appendChild(row);
+  });
+}
+
+function syncSelectAllState() {
+  const allSelected = members.length > 0 && selectedParticipantIds.size === members.length;
+  selectAllParticipants.checked = allSelected;
+}
+
+selectAllParticipants.addEventListener("change", () => {
+  const shouldSelectAll = selectAllParticipants.checked;
+  selectedParticipantIds = new Set();
+
+  document.querySelectorAll(".participant-checkbox").forEach((checkbox) => {
+    checkbox.checked = shouldSelectAll;
+    if (shouldSelectAll) {
+      selectedParticipantIds.add(checkbox.value);
+    }
+  });
+
+  syncSelectAllState();
+});
+
 loadMembers();
 
 //  GUARDAR GASTO
-
 // Envia el gasto al backend validando campos, adjuntando recibo y mostrando feedback.
 async function saveExpense() {
   const description = document.getElementById("description").value.trim();
   const amount = parseFloat(document.getElementById("amount").value);
-  const paidBy = document.getElementById("paidBy").value;
+  const paidBy = paidBySelect.value;
   const receiptFile = document.getElementById("receipt")?.files[0];
 
   if (!description || !amount || isNaN(amount) || amount <= 0 || !paidBy) {
     return showModal("Error", "Completa descripción, monto y quién pagó.", "error");
   }
 
-  let participantsToSend = selectedParticipants;
+  const participantsToSend = Array.from(selectedParticipantIds);
+
   if (participantsToSend.length === 0) {
-    const payer = members.find(m => m._id === paidBy);
-    participantsToSend = payer ? [payer] : [];
-  }
-  if (participantsToSend.length === 0) {
-    return showModal("Error", "Selecciona al menos un usuario.", "error");
+    return showModal(
+      "Error",
+      "Selecciona al menos un participante o marca 'Seleccionar a todos'.",
+      "error"
+    );
   }
 
   const formData = new FormData();
@@ -84,8 +133,8 @@ async function saveExpense() {
   formData.append("amount", amount);
   formData.append("paidBy", paidBy);
 
-  participantsToSend.forEach(p => {
-    formData.append("participants", p._id);
+  participantsToSend.forEach((participantId) => {
+    formData.append("participants", participantId);
   });
 
   if (receiptFile) {
@@ -110,81 +159,13 @@ async function saveExpense() {
       return showModal("Error", data.message || "No se pudo guardar el gasto.", "error");
     }
 
-    showModal(
-      "Exito",
-      "Gasto guardado correctamente.",
-      "success",
-      () => {
-        window.location.href = "group-detail.html";
-      }
-    );
-
+    showModal("Éxito", "Gasto guardado correctamente.", "success", () => {
+      window.location.href = "group-detail.html";
+    });
   } catch (err) {
     showModal("Error", "Error de conexión al guardar el gasto.", "error");
   }
 }
-
-
-//  AUTOCOMPLETADO
-
-// Gestiona el autocompletado mientras el usuario escribe para añadir participantes manualmente.
-searchInput.addEventListener("input", () => {
-  const query = searchInput.value.toLowerCase().trim();
-
-  if (query.length < 1) {
-    autocomplete.innerHTML = "";
-    autocomplete.style.display = "none";
-    return;
-  }
-
-  const filtered = members.filter(m =>
-    m.name.toLowerCase().includes(query) ||
-    m.email.toLowerCase().includes(query)
-  );
-
-  autocomplete.innerHTML = "";
-  autocomplete.style.display = "block";
-
-  filtered.forEach(user => {
-    const div = document.createElement("div");
-    div.className = "participant-option";
-    div.textContent = `${user.name} (${user.email})`;
-
-    div.onclick = () => {
-      if (!selectedParticipants.some(u => u._id === user._id)) {
-        addChip(user);
-        selectedParticipants.push(user);
-      }
-      searchInput.value = "";
-      autocomplete.innerHTML = "";
-      autocomplete.style.display = "none";
-    };
-
-    autocomplete.appendChild(div);
-  });
-});
-
-
-//  CHIPS
-
-// Crea un chip visual para cada participante seleccionado y permite eliminarlo facilmente.
-function addChip(user) {
-  const chip = document.createElement("div");
-  chip.className = "chip";
-
-  chip.innerHTML = `
-    <span>${user.name}</span>
-    <button>&times;</button>
-  `;
-
-  chip.querySelector("button").onclick = () => {
-    chip.remove();
-    selectedParticipants = selectedParticipants.filter(u => u._id !== user._id);
-  };
-
-  chipsContainer.appendChild(chip);
-}
-
 
 //  BOTONES
 document.getElementById("backBtn").onclick = () => {
@@ -198,8 +179,3 @@ document.getElementById("saveExpenseBtn").onclick = () => {
 document.getElementById("logoutBtn").onclick = () => {
   showLogoutModal();
 };
-
-
-
-
-

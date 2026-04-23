@@ -45,15 +45,14 @@
 
     <!-- PARTICIPANTES -->
     <label>Participantes</label>
+    <div class="participants-wrapper">
+      <label class="participant-check select-all-check">
+        <input type="checkbox" id="selectAllParticipants">
+        <span>Seleccionar a todos</span>
+      </label>
 
-    <!-- BUSCADOR -->
-    <input type="text" id="searchMember" placeholder="Buscar miembro" class="expense-input">
-
-    <!-- AUTOCOMPLETE -->
-    <div id="autocomplete" class="autocomplete"></div>
-
-    <!-- CHIPS DE PARTICIPANTES -->
-    <div id="chips" class="chips-container"></div>
+      <div id="participantsList" class="participants-list"></div>
+    </div>
 
     <!-- RECIBO -->
     <label>Foto del recibo (opcional)</label>
