@@ -128,4 +128,53 @@ Divisor de Gastos © 2026
   return { html: htmlVersion, text: textVersion };
 };
 
+//  PLANTILLA: Bienvenida tras registro
+exports.welcomeRegisterTemplate = (userName, logoUrl) => {
+  const textVersion = `
+Hola ${userName},
+
+¡Bienvenido a Divisor de Gastos!
+Tu registro se ha completado correctamente y ya puedes empezar a crear grupos, añadir gastos y compartir balances con otras personas.
+
+Si no has sido tú quien ha creado esta cuenta, puedes ignorar este mensaje.
+
+Divisor de Gastos © 2026
+  `;
+
+  const htmlVersion = `
+  <div style="background:#0d0d0d; padding:20px; color:white;
+              font-family:Arial; border-radius:12px;
+              max-width:600px; margin:auto;">
+
+    <div style="text-align:center; margin-bottom:20px;">
+      <img src="${logoUrl}" alt="Logo"
+           style="width:80px; border-radius:10px;" />
+    </div>
+
+    <h2 style="color:#4CAF50; text-align:center;">
+      ¡Bienvenido a Divisor de Gastos!
+    </h2>
+
+    <p>Hola <strong>${userName}</strong>,</p>
+
+    <p>
+      Tu registro se ha completado correctamente y ya puedes empezar a crear
+      grupos, registrar gastos y compartir los balances con otras personas.
+    </p>
+
+    <p>
+      Si quieres empezar, solo tienes que iniciar sesión en la aplicación y
+      crear tu primer grupo.
+    </p>
+
+    <br>
+    <p style="font-size:12px; opacity:0.7; text-align:center;">
+      Divisor de Gastos © 2026
+    </p>
+  </div>
+  `;
+
+  return { html: htmlVersion, text: textVersion };
+};
+
 

@@ -1,6 +1,9 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { sendEmail } = require("../utils/email.service");
+const { welcomeRegisterTemplate } = require("../utils/emailTemplates");
+const { FRONTEND_URL } = require("../config/app.config");
 
 // Registrar usuario
 exports.register = async (req, res, next) => {
@@ -28,6 +31,20 @@ exports.register = async (req, res, next) => {
       password: hashedPassword,
       avatar
     });
+
+    // Enviamos un email de bienvenida sin bloquear el registro si falla.
+    try {
+      const logoUrl = `${FRONTEND_URL}/src/assets/logo.png`;
+      const { html, text } = welcomeRegisterTemplate(newUser.name, logoUrl);
+      await sendEmail(
+        newUser.email,
+        "Bienvenido a Divisor de Gastos",
+        html,
+        text
+      );
+    } catch (emailError) {
+      console.error("Error enviando correo de bienvenida:", emailError);
+    }
 
     return res.status(201).json({
       ok: true,
