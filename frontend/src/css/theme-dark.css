@@ -2,36 +2,44 @@
    VARIABLES GLOBALES (Tema oscuro moderno + azul)
    ============================================ */
 :root {
-  --bg: #0d0f12;
-  --bg-card: #161a20;
+  --bg: #07090d;
+  --bg-card: rgba(22,26,34,0.9);
 
   --text: #e6e9ef;
   --text-muted: #9aa3b2;
 
   --primary: #3ea6ff;
   --primary-hover: #1e8fe3;
+  --accent: #7c5cff;
+  --success: #66d18f;
 
   --danger: #ff4f4f;
   --danger-hover: #d63d3d;
 
-  --border: #1f242d;
+  --border: rgba(255,255,255,0.08);
+  --surface: rgba(255,255,255,0.045);
+  --surface-strong: rgba(255,255,255,0.075);
 
-  --radius: 10px;
+  --radius: 16px;
   --transition: 0.25s ease;
-  --shadow: 0 0 20px rgba(0,0,0,0.4);
+  --shadow: 0 20px 50px rgba(0,0,0,0.38);
 }
 
 /* ============================================
    ESTILOS BASE
    ============================================ */
 body {
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(124,92,255,0.18), transparent 30%),
+    radial-gradient(circle at 82% 12%, rgba(62,166,255,0.12), transparent 28%),
+    linear-gradient(180deg, #080a10 0%, var(--bg) 48%, #07090d 100%);
   color: var(--text);
   font-family: "Inter", sans-serif;
   margin: 0;
-  padding: 0 0 92px;
+  padding: 0 0 118px;
   font-size: 16px;
   line-height: 1.4;
+  min-height: 100vh;
 }
 
 /* Reset seguro */
@@ -43,22 +51,26 @@ body {
    BOTONES GLOBALES
    ============================================ */
 .btn {
-  padding: 10px 20px;
-  background: var(--primary);
+  padding: 11px 20px;
+  background: linear-gradient(135deg, var(--primary), #248fe8);
   color: white;
   border: none;
-  border-radius: var(--radius);
+  border-radius: 999px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 700;
   transition: var(--transition);
+  box-shadow: 0 10px 22px rgba(62,166,255,0.22);
 }
 
 .btn:hover {
-  background: var(--primary-hover);
+  background: linear-gradient(135deg, #55b2ff, var(--primary-hover));
+  transform: translateY(-1px);
 }
 
 .btn-danger {
-  background: var(--danger);
+  background: linear-gradient(135deg, var(--danger), #e13f52);
+  box-shadow: 0 10px 22px rgba(255,79,79,0.18);
 }
 
 .btn-danger:hover {
@@ -66,8 +78,10 @@ body {
 }
 
 .btn-secondary {
-  background: #2c313a;
+  background: var(--surface-strong);
   color: white;
+  border: 1px solid var(--border);
+  box-shadow: none;
 }
 
 .btn-secondary:hover {
@@ -80,16 +94,18 @@ body {
 input, select, textarea {
   width: 100%;
   padding: 12px;
-  border-radius: var(--radius);
+  border-radius: 12px;
   border: 1px solid var(--border);
-  background: #11161c;
+  background: rgba(10,14,20,0.92);
   color: var(--text);
   transition: var(--transition);
   font-size: 14px;
 }
 
 input:focus, select:focus, textarea:focus {
+  outline: none;
   border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(62,166,255,0.14);
 }
 
 /* ============================================
@@ -103,6 +119,8 @@ input:focus, select:focus, textarea:focus {
   padding: 20px;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(14px);
 }
 
 .app-logo {
@@ -125,7 +143,7 @@ input:focus, select:focus, textarea:focus {
 
   body {
     font-size: 14px;
-    padding: 10px;
+    padding: 10px 10px 112px;
   }
 
   .container {
@@ -229,12 +247,12 @@ input:focus, select:focus, textarea:focus {
    CAJA INTERNA DEL MODAL (renombrada)
    ============================================ */
 .modal-box {
-  background: #1b222c;
+  background: rgba(27,34,44,0.94);
   padding: 25px;
-  border-radius: 12px;
+  border-radius: 18px;
   width: 90%;
   max-width: 420px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  box-shadow: 0 24px 70px rgba(0,0,0,0.42);
   animation: modalFade 0.25s ease-out;
   border: 1px solid var(--border);
 }
@@ -271,11 +289,11 @@ input:focus, select:focus, textarea:focus {
 .card,
 .group-card,
 .stat-card {
-  background: #1b1f27;
+  background: linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.035));
   padding: 18px;
-  border-radius: 12px;
+  border-radius: var(--radius);
   border: 1px solid var(--border);
-  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.22);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -379,16 +397,19 @@ body.modal-open {
    ============================================ */
 .bottom-nav {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: #11161c;
-  border-top: 1px solid var(--border);
+  bottom: 18px;
+  left: 50%;
+  width: min(92%, 560px);
+  transform: translateX(-50%);
+  background: rgba(17,20,29,0.88);
+  border: 1px solid var(--border);
+  border-radius: 24px;
   display: flex;
   justify-content: space-around;
-  padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
   z-index: 999;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.4);
+  box-shadow: 0 18px 50px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px);
 }
 
 .bottom-nav button {
@@ -403,6 +424,9 @@ body.modal-open {
   cursor: pointer;
   transition: color 0.2s ease, transform 0.2s ease;
   min-width: 72px;
+  border-radius: 16px;
+  padding: 6px 8px;
+  box-shadow: none;
 }
 
 .bottom-nav button .icon {
@@ -414,6 +438,7 @@ body.modal-open {
 .bottom-nav button:hover {
   color: var(--primary);
   transform: translateY(-2px);
+  background: rgba(62,166,255,0.08);
 }
 
 .bottom-nav button.active {
@@ -422,7 +447,9 @@ body.modal-open {
 
 @media (max-width: 600px) {
   .bottom-nav {
-    padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+    bottom: 10px;
+    width: calc(100% - 24px);
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
   }
 
   .bottom-nav button {

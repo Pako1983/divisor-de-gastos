@@ -4,13 +4,14 @@
 
 .profile-container {
   width: 90%;
-  max-width: 600px;
+  max-width: 680px;
   margin: 40px auto;
   background: var(--bg-card);
-  padding: 25px;
+  padding: 30px;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
+  backdrop-filter: blur(14px);
 }
 
 /* ============================================
@@ -26,9 +27,9 @@
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid var(--primary);
+  border: 3px solid rgba(62,166,255,0.9);
   margin-bottom: 15px;
-  box-shadow: 0 0 12px rgba(62,166,255,0.25);
+  box-shadow: 0 0 0 8px rgba(62,166,255,0.08), 0 14px 34px rgba(0,0,0,0.35);
 }
 
 /* ============================================
@@ -73,13 +74,14 @@
 
 /* Tarjeta de grupo del perfil */
 .profile-group-card {
-  background: #1b1f27;
-  padding: 15px;
-  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.035));
+  padding: 18px;
+  border-radius: 18px;
   border: 1px solid var(--border);
   cursor: pointer;
   transition: var(--transition);
   color: var(--text);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.2);
 }
 
 .profile-group-card:hover {
@@ -98,9 +100,9 @@
 
 /* Tarjeta de grupo genérica */
 .group-card {
-  background: #1b1f27;
-  padding: 15px;
-  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.035));
+  padding: 18px;
+  border-radius: 18px;
   border: 1px solid var(--border);
   margin-bottom: 12px;
   cursor: pointer;

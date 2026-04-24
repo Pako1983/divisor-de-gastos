@@ -4,13 +4,14 @@
 
 .dashboard-container {
   width: 90%;
-  max-width: 700px;
+  max-width: 760px;
   margin: 40px auto;
   background: var(--bg-card);
-  padding: 25px;
+  padding: 28px;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
+  backdrop-filter: blur(14px);
 }
 
 /* ============================================
@@ -26,13 +27,13 @@
 .stat-card {
   flex: 1;
   min-width: 150px;
-  background: #1b1f27;
-  padding: 20px;
-  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.035));
+  padding: 22px;
+  border-radius: 18px;
   text-align: center;
   border: 1px solid var(--border);
   transition: var(--transition);
-  box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.22);
 }
 
 .stat-card:hover {
@@ -46,7 +47,7 @@
 }
 
 .stat-card p {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
   color: var(--text);
 }
@@ -75,13 +76,14 @@
 }
 
 .group-card {
-  background: #1b1f27;
-  padding: 15px;
-  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.035));
+  padding: 18px;
+  border-radius: 18px;
   border: 1px solid var(--border);
   cursor: pointer;
   transition: var(--transition);
   color: var(--text);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.2);
 }
 
 .group-card:hover {

@@ -4,13 +4,14 @@
 
 .group-create-container {
   width: 90%;
-  max-width: 600px;
+  max-width: 680px;
   margin: 40px auto;
   background: var(--bg-card);
-  padding: 25px;
+  padding: 30px;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
+  backdrop-filter: blur(14px);
   display: flex;
   flex-direction: column;
   gap: 20px;
