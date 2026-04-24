@@ -47,24 +47,45 @@
    ============================================ */
 
 .member-card {
-  background: #1b1f27;
-  padding: 12px;
+  background: linear-gradient(180deg, #1d232d, #181e27);
+  padding: 16px;
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  margin-bottom: 10px;
-  text-align: left;
+  margin: 0 auto 12px;
+  text-align: center;
   transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  max-width: 620px;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.14);
 }
 
 .member-card:hover {
   border-color: var(--primary);
-  box-shadow: 0 0 10px rgba(62,166,255,0.25);
+  box-shadow: 0 0 14px rgba(62,166,255,0.25);
+  transform: translateY(-1px);
+}
+
+.member-info {
+  min-width: 0;
+  flex: 1;
 }
 
 .member-card span {
   display: block;
+  margin-top: 4px;
   font-size: 14px;
   color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
+
+.member-card strong {
+  display: block;
+  color: var(--text);
+  font-size: 1.05rem;
+  overflow-wrap: anywhere;
 }
 
 /* ============================================
@@ -72,13 +93,63 @@
    ============================================ */
 
 .expense-card {
-  background: #1b2230;
+  background: linear-gradient(180deg, #1d2635, #182130);
   border-left: 4px solid var(--primary);
-  padding: 12px;
-  margin-bottom: 12px;
-  border-radius: 6px;
+  padding: 16px;
+  margin: 0 auto 14px;
+  border-radius: 8px;
   border: 1px solid var(--border);
   transition: var(--transition);
+  max-width: 650px;
+  text-align: center;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.16);
+}
+
+.expense-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.expense-card-header strong {
+  color: var(--text);
+  font-size: 1.1rem;
+  overflow-wrap: anywhere;
+}
+
+.expense-amount {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(62,166,255,0.14);
+  border: 1px solid rgba(62,166,255,0.32);
+  color: var(--primary);
+  font-weight: 800;
+}
+
+.expense-meta {
+  display: grid;
+  gap: 6px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.expense-meta span {
+  overflow-wrap: anywhere;
+}
+
+.expense-meta strong {
+  color: var(--text);
+}
+
+.expense-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
 }
 
 .expense-card small {
@@ -88,6 +159,7 @@
 .expense-card:hover {
   border-color: var(--primary);
   box-shadow: 0 0 12px rgba(62,166,255,0.25);
+  transform: translateY(-1px);
 }
 
 /* Botón ver recibo */
@@ -95,10 +167,9 @@
   background: var(--primary);
   color: white;
   border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
   cursor: pointer;
-  margin-top: 8px;
   font-size: 14px;
   display: inline-flex;
   align-items: center;
@@ -120,10 +191,9 @@
   background: var(--danger);
   color: white;
   border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
   cursor: pointer;
-  margin-top: 8px;
   font-size: 14px;
   transition: background 0.2s ease;
 }
@@ -358,18 +428,21 @@
    ============================================ */
 
 .member-remove-btn {
-  margin-top: 8px;
-  padding: 6px 12px;
+  flex: 0 0 auto;
+  padding: 8px 14px;
   font-size: 13px;
-  border-radius: 6px;
+  font-weight: 700;
+  border-radius: 999px;
   background: var(--danger);
   color: white;
   border: none;
   cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .member-remove-btn:hover {
   background: var(--danger-hover);
+  transform: translateY(-1px);
 }
 
 .add-user-btn-container {
@@ -399,6 +472,11 @@
   .balance-card {
     padding: 12px;
     font-size: 0.95rem;
+  }
+
+  .member-card {
+    flex-direction: column;
+    justify-content: center;
   }
 
   .balance-summary {

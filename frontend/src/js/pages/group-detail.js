@@ -201,8 +201,10 @@ async function loadGroup() {
       div.className = "member-card";
 
       div.innerHTML = `
-        <strong>${member.name}</strong>
-        <span>${member.email}</span>
+        <div class="member-info">
+          <strong>${member.name}</strong>
+          <span>${member.email}</span>
+        </div>
       `;
 
       // Botón eliminar usuario (solo creador)
@@ -267,12 +269,18 @@ async function loadExpenses() {
         : "";
 
       div.innerHTML = `
-        <strong>${exp.description}</strong><br>
-        <span>Monto: ${exp.amount.toFixed(2)}€</span><br>
-        <span>Pagado por: ${exp.paidBy.name}</span><br>
-        <span>Participantes: ${exp.participants.map(p => p.name).join(", ")}</span><br>
-        ${receiptButton}
-        ${deleteButton}
+        <div class="expense-card-header">
+          <strong>${exp.description}</strong>
+          <span class="expense-amount">${exp.amount.toFixed(2)}€</span>
+        </div>
+        <div class="expense-meta">
+          <span><strong>Pagado por:</strong> ${exp.paidBy.name}</span>
+          <span><strong>Participantes:</strong> ${exp.participants.map(p => p.name).join(", ")}</span>
+        </div>
+        <div class="expense-actions">
+          ${receiptButton}
+          ${deleteButton}
+        </div>
       `;
 
       // Evento para ver recibo
@@ -486,7 +494,6 @@ document.getElementById("logoutBtn").onclick = () => showLogoutModal();
 loadGroup();
 loadExpenses();
 loadBalances();
-
 
 
 
