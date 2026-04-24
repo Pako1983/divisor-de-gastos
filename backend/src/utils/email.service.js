@@ -2,6 +2,8 @@ const BREVO_API_KEY = process.env.BREVO_API_KEY;
 const BREVO_FROM = process.env.BREVO_FROM || process.env.EMAIL_USER;
 const BREVO_FROM_NAME = process.env.BREVO_FROM_NAME || "Divisor de Gastos";
 
+// Envia correos usando la API HTTP de Brevo. Si falta configuracion, no rompe
+// la accion principal de la app y devuelve un resultado controlado.
 const sendEmail = async (to, subject, html, text = "") => {
   if (!BREVO_API_KEY) {
     console.warn("Skipping email send: BREVO_API_KEY not set");
@@ -35,6 +37,7 @@ const sendEmail = async (to, subject, html, text = "") => {
   }
 
   try {
+    // Usamos fetch nativo de Node para evitar dependencias extra y mantener el backend simple.
     const response = await fetch("https://api.brevo.com/v3/smtp/email", {
       method: "POST",
       headers: {

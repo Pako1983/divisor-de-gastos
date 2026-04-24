@@ -2,7 +2,7 @@ module.exports = function simplifyDebts(balances, members) {
   const debtors = [];
   const creditors = [];
 
-  // Separar deudores y acreedores
+  // Convertimos el balance neto de cada usuario en dos listas: quien debe y quien cobra.
   for (const userId in balances) {
     const amount = balances[userId];
 
@@ -18,7 +18,7 @@ module.exports = function simplifyDebts(balances, members) {
   let i = 0;
   let j = 0;
 
-  // Emparejar deudores con acreedores
+  // Emparejamos deudores con acreedores hasta cubrir todas las deudas pendientes.
   while (i < debtors.length && j < creditors.length) {
     const debtor = debtors[i];
     const creditor = creditors[j];
@@ -31,11 +31,11 @@ module.exports = function simplifyDebts(balances, members) {
       amount: Number(amount.toFixed(2))
     });
 
-    // Actualizar montos
+    // Restamos lo ya compensado para avanzar al siguiente usuario cuando quede saldado.
     debtor.amount -= amount;
     creditor.amount -= amount;
 
-    // Si ya quedó en 0, pasar al siguiente
+    // Si ya quedo en 0, pasamos al siguiente deudor o acreedor.
     if (debtor.amount === 0) i++;
     if (creditor.amount === 0) j++;
   }

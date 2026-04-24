@@ -45,6 +45,7 @@ async function loadMembers() {
 function renderPaidByOptions() {
   paidBySelect.innerHTML = "";
 
+  // Cada miembro del grupo puede aparecer como persona que pago el gasto.
   members.forEach((member) => {
     const option = document.createElement("option");
     option.value = member._id;
@@ -58,6 +59,7 @@ function renderParticipantsChecklist() {
   selectedParticipantIds = new Set();
   selectAllParticipants.checked = false;
 
+  // Creamos una fila seleccionable por miembro para repartir el gasto.
   members.forEach((member) => {
     const row = document.createElement("label");
     row.className = "participant-check";
@@ -85,6 +87,7 @@ function renderParticipantsChecklist() {
 }
 
 function syncSelectAllState() {
+  // Mantiene sincronizado el checkbox general con los participantes marcados.
   const allSelected = members.length > 0 && selectedParticipantIds.size === members.length;
   selectAllParticipants.checked = allSelected;
 }

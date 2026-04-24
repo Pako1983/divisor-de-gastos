@@ -12,6 +12,8 @@ const { FRONTEND_URL } = require("../config/app.config");
 const generateResetToken = () => crypto.randomBytes(32).toString("hex");
 const hashToken = (token) =>
   crypto.createHash("sha256").update(token).digest("hex");
+
+// Guarda el avatar como Data URL para que Render no dependa de disco persistente.
 const fileToAvatarDataUrl = (file) =>
   file ? `data:${file.mimetype};base64,${file.buffer.toString("base64")}` : null;
 
@@ -148,6 +150,7 @@ exports.forgotPassword = async (req, res, next) => {
     const rawToken = generateResetToken();
     const tokenHash = hashToken(rawToken);
 
+    // Solo guardamos el hash del token; el enlace enviado por email lleva el token original.
     user.resetPasswordToken = tokenHash;
     user.resetPasswordExpires = Date.now() + 60 * 60 * 1000; // 1 hora
     await user.save();
