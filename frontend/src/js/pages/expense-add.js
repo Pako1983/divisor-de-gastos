@@ -14,9 +14,14 @@ if (!groupId) window.location.href = "profile.html";
 const paidBySelect = document.getElementById("paidBy");
 const participantsList = document.getElementById("participantsList");
 const selectAllParticipants = document.getElementById("selectAllParticipants");
+const expenseDateInput = document.getElementById("expenseDate");
 
 let members = [];
 let selectedParticipantIds = new Set();
+
+if (expenseDateInput) {
+  expenseDateInput.value = new Date().toISOString().split("T")[0];
+}
 
 //  CARGAR MIEMBROS DEL GRUPO
 // Carga los miembros del grupo y rellena el selector de pagadores disponibles.
@@ -113,11 +118,12 @@ loadMembers();
 async function saveExpense() {
   const description = document.getElementById("description").value.trim();
   const amount = parseFloat(document.getElementById("amount").value);
+  const expenseDate = expenseDateInput?.value;
   const paidBy = paidBySelect.value;
   const receiptFile = document.getElementById("receipt")?.files[0];
 
-  if (!description || !amount || isNaN(amount) || amount <= 0 || !paidBy) {
-    return showModal("Error", "Completa descripción, monto y quién pagó.", "error");
+  if (!description || !amount || isNaN(amount) || amount <= 0 || !paidBy || !expenseDate) {
+    return showModal("Error", "Completa descripción, monto, fecha y quién pagó.", "error");
   }
 
   const participantsToSend = Array.from(selectedParticipantIds);
@@ -134,6 +140,7 @@ async function saveExpense() {
   formData.append("groupId", groupId);
   formData.append("description", description);
   formData.append("amount", amount);
+  formData.append("expenseDate", expenseDate);
   formData.append("paidBy", paidBy);
 
   participantsToSend.forEach((participantId) => {

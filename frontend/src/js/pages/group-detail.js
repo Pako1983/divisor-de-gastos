@@ -27,6 +27,16 @@ if (urlGroupId) {
 const groupId = localStorage.getItem("currentGroup");
 if (!groupId) window.location.href = "profile.html";
 
+function formatExpenseDate(dateValue) {
+  const date = dateValue ? new Date(dateValue) : null;
+  if (!date || Number.isNaN(date.getTime())) return "Sin fecha";
+  return date.toLocaleDateString("es-ES", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+  });
+}
+
 
 
 //  ELEMENTOS NUEVOS
@@ -274,6 +284,7 @@ async function loadExpenses() {
           <span class="expense-amount">${exp.amount.toFixed(2)}€</span>
         </div>
         <div class="expense-meta">
+          <span><strong>Fecha:</strong> ${formatExpenseDate(exp.expenseDate || exp.createdAt)}</span>
           <span><strong>Pagado por:</strong> ${exp.paidBy.name}</span>
           <span><strong>Participantes:</strong> ${exp.participants.map(p => p.name).join(", ")}</span>
         </div>
@@ -494,7 +505,6 @@ document.getElementById("logoutBtn").onclick = () => showLogoutModal();
 loadGroup();
 loadExpenses();
 loadBalances();
-
 
 
 

@@ -22,6 +22,13 @@ const normalizeParticipants = (participants) => {
 const isGroupMember = (group, userId) =>
   group.members.some((member) => member._id.toString() === userId);
 
+// Convierte la fecha enviada desde el formulario en Date; si no llega, usa la fecha actual.
+const parseExpenseDate = (expenseDate) => {
+  if (!expenseDate) return new Date();
+  const parsedDate = new Date(expenseDate);
+  return Number.isNaN(parsedDate.getTime()) ? null : parsedDate;
+};
+
 // Calcula el estado actual de las deudas del grupo incluyendo gastos y liquidaciones.
 const getGroupBalanceSnapshot = async (groupId) => {
   const group = await Group.findById(groupId).populate("members", "name email");
@@ -69,8 +76,9 @@ const getGroupBalanceSnapshot = async (groupId) => {
 // CREAR GASTO: valida campos, guarda el gasto, actualiza el grupo y notifica por email.
 exports.createExpense = async (req, res, next) => {
   try {
-    const { groupId, description, amount, paidBy, participants } = req.body;
+    const { groupId, description, amount, paidBy, participants, expenseDate } = req.body;
     const amountValue = Number(amount);
+    const parsedExpenseDate = parseExpenseDate(expenseDate);
 
     if (!groupId || !description || !paidBy) {
       return respondError(res, 400, "Todos los campos obligatorios deben estar presentes");
@@ -78,6 +86,10 @@ exports.createExpense = async (req, res, next) => {
 
     if (!amountValue || amountValue <= 0) {
       return respondError(res, 400, "El monto debe ser mayor que cero");
+    }
+
+    if (!parsedExpenseDate) {
+      return respondError(res, 400, "La fecha del gasto no es valida");
     }
 
     const group = await Group.findById(groupId).populate("members", "email name");
@@ -116,6 +128,7 @@ exports.createExpense = async (req, res, next) => {
       group: groupId,
       description: description.trim(),
       amount: amountValue,
+      expenseDate: parsedExpenseDate,
       paidBy,
       participants: finalParticipants,
       receipt
@@ -174,7 +187,7 @@ exports.getGroupExpenses = async (req, res, next) => {
     const expenses = await Expense.find({ group: groupId })
       .populate("paidBy", "name email")
       .populate("participants", "name email")
-      .sort({ createdAt: -1 });
+      .sort({ expenseDate: -1, createdAt: -1 });
 
     return res.json({ ok: true, expenses });
   } catch (error) {
@@ -366,5 +379,4 @@ exports.deleteExpense = async (req, res, next) => {
     next(error);
   }
 };
-
 
