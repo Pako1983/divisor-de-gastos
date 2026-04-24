@@ -2,7 +2,11 @@ const User = require("../models/user.model");
 const Group = require("../models/group.model");
 const Expense = require("../models/expense.model");
 const { sendEmail } = require("../utils/email.service");
-const { addedToGroupTemplate } = require("../utils/emailTemplates");
+const {
+  addedToGroupTemplate,
+  removedFromGroupTemplate,
+  groupDeletedTemplate
+} = require("../utils/emailTemplates");
 const { FRONTEND_URL, buildFrontendRedirectUrl } = require("../config/app.config");
 
 // Responde errores de la misma forma en todas las rutas.
@@ -181,12 +185,35 @@ exports.removeMember = async (req, res, next) => {
       return respondError(res, 400, "No puedes eliminar al creador del grupo");
     }
 
+    const userToRemove = await User.findById(userId);
+    const creator = await User.findById(req.userId);
+
     group.members = group.members.filter((member) => member.toString() !== userId);
     await group.save();
 
     await User.findByIdAndUpdate(userId, { $pull: { groups: groupId } });
 
-    return res.json({ ok: true, message: "Usario eliminado correctamente" });
+    if (userToRemove) {
+      try {
+        const { html, text } = removedFromGroupTemplate(
+          userToRemove.name,
+          group.name,
+          creator ? creator.name : "el administrador",
+          `${FRONTEND_URL}/src/assets/logo.png`
+        );
+
+        await sendEmail(
+          userToRemove.email,
+          "Has sido eliminado de un grupo - Divisor de Gastos",
+          html,
+          text
+        );
+      } catch (emailError) {
+        console.error("Error enviando aviso de usuario eliminado:", emailError);
+      }
+    }
+
+    return res.json({ ok: true, message: "Usuario eliminado correctamente" });
   } catch (error) {
     console.error("ERROR AL ELIMINAR USUARIO:", error);
     return respondError(res, 500, "Error interno del servidor");
@@ -199,15 +226,41 @@ exports.deleteGroup = async (req, res, next) => {
     const { groupId } = req.params;
     const userId = req.userId;
 
-    const group = await Group.findById(groupId);
+    const group = await Group.findById(groupId)
+      .populate("members", "name email")
+      .populate("createdBy", "name email");
     if (!group) {
       return respondError(res, 404, "Grupo no encontrado");
     }
 
-    const creatorId = group.createdBy.toString();
+    const creatorId = normalizeMemberId(group.createdBy);
     if (creatorId !== userId) {
       return respondError(res, 403, "No tienes permiso para eliminar este grupo");
     }
+
+    const logoUrl = `${FRONTEND_URL}/src/assets/logo.png`;
+    const deletedBy = group.createdBy ? group.createdBy.name : "el administrador";
+    const membersToNotify = group.members.filter(
+      (member) => normalizeMemberId(member) !== userId
+    );
+
+    await Promise.allSettled(
+      membersToNotify.map((member) => {
+        const { html, text } = groupDeletedTemplate(
+          member.name,
+          group.name,
+          deletedBy,
+          logoUrl
+        );
+
+        return sendEmail(
+          member.email,
+          "Un grupo ha sido eliminado - Divisor de Gastos",
+          html,
+          text
+        );
+      })
+    );
 
     await Expense.deleteMany({ group: groupId });
     await User.updateMany({ groups: groupId }, { $pull: { groups: groupId } });

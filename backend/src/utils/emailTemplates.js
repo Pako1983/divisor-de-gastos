@@ -368,3 +368,105 @@ Divisor de Gastos © 2026
 
   return { html: htmlVersion, text: textVersion };
 };
+
+//  PLANTILLA: Usuario eliminado de un grupo
+exports.removedFromGroupTemplate = (
+  userName,
+  groupName,
+  removedBy,
+  logoUrl
+) => {
+  const textVersion = `
+Hola ${userName},
+
+Has sido eliminado del grupo "${groupName}" por ${removedBy}.
+Desde este momento ya no podras ver sus gastos ni balances.
+
+Divisor de Gastos (c) 2026
+  `;
+
+  const htmlVersion = `
+  <div style="background:#0d0d0d; padding:20px; color:white;
+              font-family:Arial; border-radius:12px;
+              max-width:600px; margin:auto;">
+
+    <div style="text-align:center; margin-bottom:20px;">
+      <img src="${logoUrl}" alt="Logo"
+           style="width:80px; border-radius:10px;" />
+    </div>
+
+    <h2 style="color:#ff4f4f; text-align:center;">
+      Has sido eliminado de un grupo
+    </h2>
+
+    <p>Hola <strong>${userName}</strong>,</p>
+
+    <p>
+      Has sido eliminado del grupo <strong>${groupName}</strong>
+      por <strong>${removedBy}</strong>.
+    </p>
+
+    <p>
+      Desde este momento ya no podras ver sus gastos ni balances.
+    </p>
+
+    <br>
+    <p style="font-size:12px; opacity:0.7; text-align:center;">
+      Divisor de Gastos (c) 2026
+    </p>
+  </div>
+  `;
+
+  return { html: htmlVersion, text: textVersion };
+};
+
+//  PLANTILLA: Grupo eliminado
+exports.groupDeletedTemplate = (
+  userName,
+  groupName,
+  deletedBy,
+  logoUrl
+) => {
+  const textVersion = `
+Hola ${userName},
+
+El grupo "${groupName}" ha sido eliminado por ${deletedBy}.
+Ya no estara disponible en tu cuenta.
+
+Divisor de Gastos (c) 2026
+  `;
+
+  const htmlVersion = `
+  <div style="background:#0d0d0d; padding:20px; color:white;
+              font-family:Arial; border-radius:12px;
+              max-width:600px; margin:auto;">
+
+    <div style="text-align:center; margin-bottom:20px;">
+      <img src="${logoUrl}" alt="Logo"
+           style="width:80px; border-radius:10px;" />
+    </div>
+
+    <h2 style="color:#ff4f4f; text-align:center;">
+      Grupo eliminado
+    </h2>
+
+    <p>Hola <strong>${userName}</strong>,</p>
+
+    <p>
+      El grupo <strong>${groupName}</strong> ha sido eliminado por
+      <strong>${deletedBy}</strong>.
+    </p>
+
+    <p>
+      Ya no estara disponible en tu cuenta.
+    </p>
+
+    <br>
+    <p style="font-size:12px; opacity:0.7; text-align:center;">
+      Divisor de Gastos (c) 2026
+    </p>
+  </div>
+  `;
+
+  return { html: htmlVersion, text: textVersion };
+};
