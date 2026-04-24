@@ -340,7 +340,15 @@ async function loadBalances() {
       return;
     }
 
-    data.balances.forEach(b => {
+    const pendingBalances = data.balances.filter(b => Math.abs(Number(b.amount) || 0) >= 0.01);
+
+    if (pendingBalances.length === 0) {
+      balancesContainer.innerHTML = "<p>No hay deudas pendientes</p>";
+      return;
+    }
+
+    pendingBalances.forEach(b => {
+      const amount = Number(b.amount) || 0;
       const div = document.createElement("div");
       div.className = "balance-card";
 
@@ -348,7 +356,7 @@ async function loadBalances() {
       const debtorId = String(b.from?._id ?? b.from?.id ?? "");
       const canSettle = creditorId !== "" && creditorId === currentUserId;
       const settleButton = canSettle
-        ? `<button class="btn btn-secondary settle-debt-btn" data-debtor="${debtorId}" data-creditor="${creditorId}" data-amount="${b.amount}">
+        ? `<button class="btn btn-secondary settle-debt-btn" data-debtor="${debtorId}" data-creditor="${creditorId}" data-amount="${amount}">
             Liquidar
           </button>`
         : "";
@@ -359,7 +367,7 @@ async function loadBalances() {
             <span class="balance-label">Debe</span>
             <strong>${b.from.name}</strong>
           </div>
-          <div class="balance-amount">${b.amount.toFixed(2)}€</div>
+          <div class="balance-amount">${amount.toFixed(2)}€</div>
           <div class="balance-person balance-person-creditor">
             <span class="balance-label">A pagar a</span>
             <strong>${b.to.name}</strong>
@@ -373,7 +381,7 @@ async function loadBalances() {
         settleBtn.addEventListener("click", () => {
           showConfirmModal(
             "Liquidar deuda",
-            `¿Marcar como pagada la deuda de ${b.from.name} por ${b.amount.toFixed(2)}€?`,
+            `¿Marcar como pagada la deuda de ${b.from.name} por ${amount.toFixed(2)}€?`,
             async () => {
               const res = await fetch(`${API_URL}/expenses/${groupId}/settle`, {
                 method: "POST",
@@ -384,7 +392,7 @@ async function loadBalances() {
                 body: JSON.stringify({
                   fromUserId: debtorId,
                   toUserId: creditorId,
-                  amount: b.amount
+                  amount
                 })
               });
 
@@ -478,7 +486,6 @@ document.getElementById("logoutBtn").onclick = () => showLogoutModal();
 loadGroup();
 loadExpenses();
 loadBalances();
-
 
 
 
