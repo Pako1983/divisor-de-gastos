@@ -354,9 +354,17 @@ async function loadBalances() {
         : "";
 
       div.innerHTML = `
-        <strong>${b.from.name}</strong> debe 
-        <strong>${b.amount.toFixed(2)}€</strong> a 
-        <strong>${b.to.name}</strong>
+        <div class="balance-summary">
+          <div class="balance-person balance-person-debtor">
+            <span class="balance-label">Debe</span>
+            <strong>${b.from.name}</strong>
+          </div>
+          <div class="balance-amount">${b.amount.toFixed(2)}€</div>
+          <div class="balance-person balance-person-creditor">
+            <span class="balance-label">A pagar a</span>
+            <strong>${b.to.name}</strong>
+          </div>
+        </div>
         ${settleButton}
       `;
 
@@ -470,7 +478,6 @@ document.getElementById("logoutBtn").onclick = () => showLogoutModal();
 loadGroup();
 loadExpenses();
 loadBalances();
-
 
 
 
