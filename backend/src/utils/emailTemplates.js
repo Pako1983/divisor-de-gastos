@@ -470,3 +470,71 @@ Divisor de Gastos (c) 2026
 
   return { html: htmlVersion, text: textVersion };
 };
+
+//  PLANTILLA: Invitacion para registrarse y unirse a un grupo
+exports.groupInvitationTemplate = (
+  email,
+  groupName,
+  invitedBy,
+  registerUrl,
+  logoUrl
+) => {
+  const textVersion = `
+Hola,
+
+${invitedBy} te ha invitado a unirte al grupo "${groupName}" en Divisor de Gastos.
+Si aun no tienes cuenta, puedes registrarte aqui:
+${registerUrl}
+
+Una vez completes el registro, tu cuenta se asociara automaticamente al grupo.
+
+Divisor de Gastos (c) 2026
+  `;
+
+  const htmlVersion = `
+  <div style="background:#0d0d0d; padding:20px; color:white;
+              font-family:Arial; border-radius:12px;
+              max-width:600px; margin:auto;">
+
+    <div style="text-align:center; margin-bottom:20px;">
+      <img src="${logoUrl}" alt="Logo"
+           style="width:80px; border-radius:10px;" />
+    </div>
+
+    <h2 style="color:#4CAF50; text-align:center;">
+      Invitacion para registrarte
+    </h2>
+
+    <p>Hola,</p>
+
+    <p>
+      <strong>${invitedBy}</strong> te ha invitado a unirte al grupo
+      <strong>${groupName}</strong> en <strong>Divisor de Gastos</strong>.
+    </p>
+
+    <p>
+      Si aun no tienes cuenta, puedes registrarte con este correo para unirte automaticamente al grupo.
+    </p>
+
+    <div style="text-align:center; margin-top:25px;">
+      <a href="${registerUrl}"
+         style="background:#4CAF50; padding:12px 20px;
+                color:white; text-decoration:none;
+                border-radius:8px; font-weight:bold;">
+        Registrarme ahora
+      </a>
+    </div>
+
+    <p style="word-break:break-all; font-size:12px; opacity:0.8; margin-top:20px;">
+      ${registerUrl}
+    </p>
+
+    <br>
+    <p style="font-size:12px; opacity:0.7; text-align:center;">
+      Divisor de Gastos (c) 2026
+    </p>
+  </div>
+  `;
+
+  return { html: htmlVersion, text: textVersion };
+};

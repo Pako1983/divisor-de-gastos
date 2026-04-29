@@ -1,5 +1,13 @@
-﻿import { showModal } from "../components/modal.js";
+import { showModal } from "../components/modal.js";
 import { API_URL } from "../config.js";
+
+// Si el usuario llego desde una invitacion, prellenamos el email del enlace.
+const invitedEmail = new URLSearchParams(window.location.search).get("email");
+const emailInput = document.getElementById("email");
+
+if (emailInput && invitedEmail) {
+  emailInput.value = invitedEmail;
+}
 
 // Captura el submit del formulario de registro y prepara los datos para enviarlos a la API.
 document.getElementById("registerForm").addEventListener("submit", async (e) => {

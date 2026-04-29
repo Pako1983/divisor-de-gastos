@@ -8,6 +8,7 @@ const {
   passwordResetTemplate
 } = require("../utils/emailTemplates");
 const { FRONTEND_URL } = require("../config/app.config");
+const Group = require("../models/group.model");
 
 const generateResetToken = () => crypto.randomBytes(32).toString("hex");
 const hashToken = (token) =>
@@ -16,6 +17,8 @@ const hashToken = (token) =>
 // Guarda el avatar como Data URL para que Render no dependa de disco persistente.
 const fileToAvatarDataUrl = (file) =>
   file ? `data:${file.mimetype};base64,${file.buffer.toString("base64")}` : null;
+
+const normalizeEmail = (email) => email.trim().toLowerCase();
 
 // Registrar usuario
 exports.register = async (req, res, next) => {
@@ -43,6 +46,24 @@ exports.register = async (req, res, next) => {
       password: hashedPassword,
       avatar
     });
+
+    // Si este correo estaba invitado a grupos pendientes, lo vinculamos al registrarse.
+    const invitedGroups = await Group.find({ pendingInvites: normalizeEmail(email) }).select("_id");
+    if (invitedGroups.length > 0) {
+      const groupIds = invitedGroups.map((group) => group._id);
+
+      await Group.updateMany(
+        { _id: { $in: groupIds } },
+        {
+          $addToSet: { members: newUser._id },
+          $pull: { pendingInvites: normalizeEmail(email) }
+        }
+      );
+
+      await User.findByIdAndUpdate(newUser._id, {
+        $addToSet: { groups: { $each: groupIds } }
+      });
+    }
 
     // Enviamos un email de bienvenida sin bloquear el registro si falla.
     try {

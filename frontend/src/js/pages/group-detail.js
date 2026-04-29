@@ -47,20 +47,28 @@ const addUserBtn = document.getElementById("addUserBtn");
 
 let selectedUsers = [];
 
+function isValidEmail(email) {
+  return /^\S+@\S+\.\S+$/.test(email);
+}
+
 
 
 //  FUNCIÓN: CHIP VISUAL
 function addChip(user) {
   const chip = document.createElement("div");
   chip.className = "chip";
-  chip.textContent = `${user.name} (${user.email})`;
+  chip.textContent = user.isInvite
+    ? `Invitar: ${user.email}`
+    : `${user.name} (${user.email})`;
 
   const removeBtn = document.createElement("span");
   removeBtn.textContent = "×";
   removeBtn.className = "chip-remove";
 
   removeBtn.onclick = () => {
-    selectedUsers = selectedUsers.filter(u => u._id !== user._id);
+    selectedUsers = selectedUsers.filter((u) =>
+      user.isInvite ? u.email !== user.email : u._id !== user._id
+    );
     chip.remove();
   };
 
@@ -111,6 +119,31 @@ searchInput.addEventListener("input", async () => {
       autocomplete.appendChild(div);
     });
 
+    if (data.users.length === 0 && isValidEmail(query)) {
+      const inviteItem = document.createElement("div");
+      inviteItem.className = "autocomplete-item autocomplete-invite";
+      inviteItem.textContent = `Invitar a ${query}`;
+
+      inviteItem.onclick = () => {
+        if (!selectedUsers.some((u) => (u.email || "").toLowerCase() === query.toLowerCase())) {
+          addChip({
+            name: query,
+            email: query,
+            isInvite: true
+          });
+          selectedUsers.push({
+            name: query,
+            email: query,
+            isInvite: true
+          });
+        }
+        searchInput.value = "";
+        autocomplete.style.display = "none";
+      };
+
+      autocomplete.appendChild(inviteItem);
+    }
+
   } catch (err) {
     showModal("Error", "No se pudo buscar usuarios", "error");
   }
@@ -120,11 +153,20 @@ searchInput.addEventListener("input", async () => {
 
 //  AÑADIR USUARIO AL GRUPO
 addUserBtn.onclick = async () => {
-  if (selectedUsers.length === 0) {
-    return showModal("Aviso", "Selecciona un usuario primero.");
+  const typedEmail = searchInput.value.trim();
+  if (selectedUsers.length === 0 && isValidEmail(typedEmail)) {
+    selectedUsers.push({
+      name: typedEmail,
+      email: typedEmail,
+      isInvite: true
+    });
   }
 
-  const user = selectedUsers[0]; // solo uno a la vez
+  if (selectedUsers.length === 0) {
+    return showModal("Aviso", "Selecciona un usuario o escribe un email para invitar.");
+  }
+
+  const user = selectedUsers[0]; // invitamos o añadimos uno a la vez
 
   try {
     const res = await fetch(`${API_URL}/groups/${groupId}/add-member`, {
@@ -133,7 +175,11 @@ addUserBtn.onclick = async () => {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token
       },
-      body: JSON.stringify({ userId: user._id })
+      body: JSON.stringify(
+        user.isInvite
+          ? { email: user.email }
+          : { userId: user._id }
+      )
     });
 
     const data = await res.json();
@@ -141,7 +187,7 @@ addUserBtn.onclick = async () => {
     if (!data.ok) return showModal("Error", data.message, "error");
 
     // Modal SIN botón cancelar
-    showModal("Éxito", "Usuario añadido correctamente.", "info");
+    showModal("Éxito", data.message || "Usuario añadido correctamente.", "info");
 
     selectedUsers = [];
     selectedUsersContainer.innerHTML = "";
@@ -505,6 +551,3 @@ document.getElementById("logoutBtn").onclick = () => showLogoutModal();
 loadGroup();
 loadExpenses();
 loadBalances();
-
-
-

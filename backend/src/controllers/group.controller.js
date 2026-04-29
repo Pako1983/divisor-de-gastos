@@ -4,6 +4,7 @@ const Expense = require("../models/expense.model");
 const { sendEmail } = require("../utils/email.service");
 const {
   addedToGroupTemplate,
+  groupInvitationTemplate,
   removedFromGroupTemplate,
   groupDeletedTemplate
 } = require("../utils/emailTemplates");
@@ -23,6 +24,9 @@ const normalizeMemberId = (member) => {
 // Verifica si un usuario forma parte de un grupo concreto.
 const isGroupMember = (group, userId) =>
   group.members.some((member) => normalizeMemberId(member) === userId);
+
+// Normaliza emails para evitar duplicados por mayusculas o espacios.
+const normalizeEmail = (email) => String(email || "").trim().toLowerCase();
 
 // Limpia la lista de usuarios, elimina duplicados y asegura que el propio creador este incluido.
 const sanitizeMembers = (members, ownerId) => {
@@ -111,10 +115,10 @@ exports.searchUsers = async (req, res, next) => {
 exports.addMember = async (req, res, next) => {
   try {
     const { groupId } = req.params;
-    const { userId } = req.body;
+    const { userId, email } = req.body;
 
-    if (!userId) {
-      return respondError(res, 400, "Debes indicar el ID del usuario");
+    if (!userId && !email) {
+      return respondError(res, 400, "Debes indicar un usuario o un email");
     }
 
     const group = await Group.findById(groupId);
@@ -126,38 +130,83 @@ exports.addMember = async (req, res, next) => {
       return respondError(res, 403, "Solo el creador puede añadir usuarios");
     }
 
-    if (isGroupMember(group, userId)) {
-      return respondError(res, 409, "El usuario ya esta en el grupo");
+    const normalizedEmail = normalizeEmail(email);
+    const userToAdd = userId
+      ? await User.findById(userId)
+      : await User.findOne({ email: normalizedEmail });
+
+    if (userToAdd) {
+      const memberId = userToAdd._id.toString();
+
+      if (isGroupMember(group, memberId)) {
+        return respondError(res, 409, "El usuario ya esta en el grupo");
+      }
+
+      group.members.push(memberId);
+      group.pendingInvites = (group.pendingInvites || []).filter(
+        (inviteEmail) => inviteEmail !== userToAdd.email
+      );
+      await group.save();
+
+      await User.findByIdAndUpdate(memberId, { $addToSet: { groups: groupId } });
+
+      const creator = await User.findById(req.userId);
+
+      const groupUrl = buildFrontendRedirectUrl({
+        redirect: "group-detail",
+        groupId: group._id.toString()
+      });
+
+      const { html, text } = addedToGroupTemplate(
+        userToAdd.name,
+        group.name,
+        creator ? creator.name : "",
+        groupUrl,
+        `${FRONTEND_URL}/src/assets/logo.png`
+      );
+
+      await sendEmail(userToAdd.email, "Has sido añadido a un grupo", html, text);
+
+      return res.json({ ok: true, message: "Usuario añadido correctamente", group });
     }
 
-    const userToAdd = await User.findById(userId);
-    if (!userToAdd) {
-      return respondError(res, 404, "Usuario no encontrado");
+    if (!normalizedEmail) {
+      return respondError(res, 400, "Debes indicar un email valido");
     }
 
-    group.members.push(userId);
+    if (!/^\S+@\S+\.\S+$/.test(normalizedEmail)) {
+      return respondError(res, 400, "Debes indicar un email valido");
+    }
+
+    if ((group.pendingInvites || []).includes(normalizedEmail)) {
+      return respondError(res, 409, "Ya existe una invitacion pendiente para ese email");
+    }
+
+    group.pendingInvites = [...(group.pendingInvites || []), normalizedEmail];
     await group.save();
 
-    await User.findByIdAndUpdate(userId, { $addToSet: { groups: groupId } });
-
     const creator = await User.findById(req.userId);
-
-    const groupUrl = buildFrontendRedirectUrl({
-      redirect: "group-detail",
-      groupId: group._id.toString()
-    });
-
-    const { html, text } = addedToGroupTemplate(
-      userToAdd.name,
+    const registerUrl = `${FRONTEND_URL}/src/templates/register.html?email=${encodeURIComponent(normalizedEmail)}`;
+    const { html, text } = groupInvitationTemplate(
+      normalizedEmail,
       group.name,
-      creator ? creator.name : "",
-      groupUrl,
+      creator ? creator.name : "un miembro del grupo",
+      registerUrl,
       `${FRONTEND_URL}/src/assets/logo.png`
     );
 
-    await sendEmail(userToAdd.email, "Has sido añadido a un grupo", html, text);
+    await sendEmail(
+      normalizedEmail,
+      "Invitacion para unirte a Divisor de Gastos",
+      html,
+      text
+    );
 
-    return res.json({ ok: true, message: "Usuario añadido correctamente", group });
+    return res.json({
+      ok: true,
+      message: "Invitacion enviada correctamente",
+      group
+    });
   } catch (error) {
     next(error);
   }
