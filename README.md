@@ -1,36 +1,79 @@
 # Divisor de Gastos
 
+[![Live Frontend](https://img.shields.io/badge/Frontend-Live-4f8cff?style=for-the-badge)](https://divisor-de-gastos.onrender.com)
+[![Live Backend](https://img.shields.io/badge/Backend-Live-2ecc71?style=for-the-badge)](https://divisor-de-gastos-backend.onrender.com)
+[![Node](https://img.shields.io/badge/Node.js-Backend-339933?style=for-the-badge)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Database-47a248?style=for-the-badge)](https://www.mongodb.com/)
+
 Aplicacion web para gestionar grupos, gastos compartidos y balances entre personas.
-Permite crear cuentas, organizar grupos, anadir gastos con recibos, enviar notificaciones por email y liquidar deudas de forma sencilla.
+Disenada para registrar usuarios, organizar equipos, dividir gastos, automatizar avisos por email y liquidar deudas de forma clara y rapida.
 
-## Demo
+## Capturas principales
 
-- Frontend: [https://divisor-de-gastos.onrender.com](https://divisor-de-gastos.onrender.com)
-- Backend: [https://divisor-de-gastos-backend.onrender.com](https://divisor-de-gastos-backend.onrender.com)
+<p align="center">
+  <img src="docs/readme/inicio-mejorado.png" alt="Inicio mejorado" width="700">
+</p>
 
-## Funcionalidades principales
+## Resumen del proyecto
 
-- Registro e inicio de sesion de usuarios.
-- Perfil con avatar y edicion de datos.
-- Creacion y gestion de grupos.
-- Anadir usuarios a grupos mediante busqueda o invitacion por email.
-- Registro de gastos con participantes, fecha y recibo.
-- Calculo de balances y deudas entre miembros.
-- Liquidacion de deudas.
-- Emails de bienvenida, invitacion, confirmacion y avisos del sistema.
-- Diseno responsive para escritorio y movil.
+- Gestion de usuarios con registro, inicio de sesion y perfil con avatar.
+- Creacion de grupos, alta y baja de miembros y control de balances.
+- Registro de gastos con fecha, participantes y recibo adjunto.
+- Invitaciones por email para usuarios no registrados.
+- Confirmaciones y notificaciones automaticas por correo.
+- Interfaz responsive adaptada a escritorio y movil.
+- Despliegue en Render con persistencia en MongoDB Atlas.
 
-## Tecnologias
+## Problema que resuelve
 
-- Frontend: HTML, CSS y JavaScript.
-- Backend: Node.js, Express y MongoDB.
+El proyecto surge para simplificar la gestion de gastos compartidos en grupos de amigos, familia o convivencia.
+Evita calculos manuales, centraliza la informacion en una sola aplicacion y permite saber rapidamente quien debe dinero y cuanto.
+
+## Caracteristicas destacadas
+
+### Funcionales
+
+- Registro e inicio de sesion.
+- Recuperacion de contrasena por email.
+- Alta de grupos con usuarios existentes o invitaciones a nuevos correos.
+- Registro de gastos con fecha y archivo del recibo.
+- Cierre de deudas con actualizacion inmediata del balance.
+- Envio de emails de bienvenida, invitacion, grupo eliminado, miembro eliminado y liquidacion.
+
+### Experiencia de usuario
+
+- Diseno visual oscuro, moderno y centrado en tarjetas.
+- Vista adaptada a moviles con barra inferior de navegacion.
+- Botones claros para acciones frecuentes.
+- Galerias y bloques visuales para entender rapido cada grupo.
+
+## Arquitectura de la solucion
+
+```mermaid
+flowchart TD
+  A[Usuario web o movil] --> B[Frontend HTML, CSS y JavaScript]
+  B --> C[API Node.js y Express]
+  C --> D[MongoDB Atlas]
+  C --> E[Brevo API]
+  C --> F[Render]
+  D --> G[Usuarios, grupos, gastos y balances]
+  E --> H[Correos de registro, invitacion y avisos]
+  F --> I[Despliegue del frontend y backend]
+```
+
+## Stack tecnico
+
+- Frontend: HTML, CSS y JavaScript puro.
+- Backend: Node.js + Express.
+- Base de datos: MongoDB Atlas.
 - Autenticacion: JWT.
-- Emails: Brevo.
-- Despliegue: Render.
+- Subida y gestion de recibos: multer + almacenamiento local o persistente segun entorno.
+- Emails transaccionales: Brevo.
+- Hosting: Render.
 
-## Evolucion visual de la aplicacion
+## Evolucion visual
 
-Las siguientes imagenes muestran una comparativa entre el estado inicial de la interfaz y las mejoras aplicadas posteriormente.
+La siguiente comparativa muestra como fue evolucionando la interfaz durante el desarrollo.
 
 ### Inicio
 
@@ -128,30 +171,25 @@ Las siguientes imagenes muestran una comparativa entre el estado inicial de la i
   <img src="docs/readme/perfil.png" alt="Perfil" width="320">
 </p>
 
-## Instalacion local
+## Manual de instalacion local
 
-1. Clona el repositorio.
-2. Instala dependencias en backend y frontend.
-3. Configura las variables de entorno.
-4. Arranca primero el backend y despues el frontend.
+### 1. Clonar el repositorio
 
-### Backend
+```bash
+git clone https://github.com/Pako1983/divisor-de-gastos.git
+cd divisor-de-gastos
+```
+
+### 2. Instalar dependencias
 
 ```bash
 cd backend
 npm install
-npm start
-```
-
-### Frontend
-
-```bash
-cd frontend
+cd ../frontend
 npm install
-npm start
 ```
 
-## Variables de entorno
+### 3. Configurar variables de entorno
 
 Ejemplo orientativo para el backend:
 
@@ -164,6 +202,33 @@ BREVO_API_KEY=tu_api_key
 BREVO_FROM=tu_correo_verificado
 ```
 
+### 4. Arrancar el proyecto
+
+```bash
+# Backend
+cd backend
+npm start
+
+# Frontend en otra terminal
+cd frontend
+npm start
+```
+
+## Despliegue
+
+- Frontend publicado en Render como sitio estatico.
+- Backend desplegado como servicio web en Render.
+- Base de datos alojada en MongoDB Atlas.
+- Emails gestionados con Brevo.
+
+## Posibles mejoras futuras
+
+- Exportacion de balances a PDF o Excel.
+- Mejoras en analitica y estadisticas por grupo.
+- Persistencia de archivos en almacenamiento externo para recibos.
+- Panel de administracion para grupos grandes.
+
 ## Autor
 Francisco Rafael Alvarez Rama
 Proyecto desarrollado como TFG y publicado en GitHub con despliegue en Render.
+
