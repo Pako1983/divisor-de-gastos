@@ -165,5 +165,5 @@ BREVO_FROM=tu_correo_verificado
 ```
 
 ## Autor
-
+Francisco Rafael Alvarez Rama
 Proyecto desarrollado como TFG y publicado en GitHub con despliegue en Render.
